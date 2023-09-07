@@ -24,6 +24,8 @@
 		17A5C1E52AA9BAAF00355054 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 17A5C1E42AA9BAAF00355054 /* .gitignore */; };
 		17A5C1E72AA9BACF00355054 /* APIKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A5C1E62AA9BACF00355054 /* APIKeys.swift */; };
 		17A5C1E92AA9BBD400355054 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A5C1E82AA9BBD400355054 /* APIManager.swift */; };
+		17A5C1EE2AAA1D8B00355054 /* SortButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A5C1ED2AAA1D8B00355054 /* SortButton.swift */; };
+		17A5C1F02AAA233300355054 /* SortEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A5C1EF2AAA233300355054 /* SortEnum.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +44,8 @@
 		17A5C1E42AA9BAAF00355054 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		17A5C1E62AA9BACF00355054 /* APIKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIKeys.swift; sourceTree = "<group>"; };
 		17A5C1E82AA9BBD400355054 /* APIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
+		17A5C1ED2AAA1D8B00355054 /* SortButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortButton.swift; sourceTree = "<group>"; };
+		17A5C1EF2AAA233300355054 /* SortEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortEnum.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,6 +82,7 @@
 		17A5C1B62AA9A4DC00355054 /* NaverShoppingList_2ndRecap */ = {
 			isa = PBXGroup;
 			children = (
+				17A5C1EC2AAA1D2300355054 /* CustomUI */,
 				17A5C1E12AA9B99200355054 /* Network */,
 				17A5C1DE2AA9AE8300355054 /* Extension */,
 				17A5C1CD2AA9A65800355054 /* Base */,
@@ -89,6 +94,7 @@
 				17A5C1C22AA9A4DD00355054 /* LaunchScreen.storyboard */,
 				17A5C1C52AA9A4DD00355054 /* Info.plist */,
 				17A5C1E42AA9BAAF00355054 /* .gitignore */,
+				17A5C1EF2AAA233300355054 /* SortEnum.swift */,
 			);
 			path = NaverShoppingList_2ndRecap;
 			sourceTree = "<group>";
@@ -126,6 +132,14 @@
 				17A5C1E82AA9BBD400355054 /* APIManager.swift */,
 			);
 			path = Network;
+			sourceTree = "<group>";
+		};
+		17A5C1EC2AAA1D2300355054 /* CustomUI */ = {
+			isa = PBXGroup;
+			children = (
+				17A5C1ED2AAA1D8B00355054 /* SortButton.swift */,
+			);
+			path = CustomUI;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -213,12 +227,14 @@
 				17A5C1E32AA9B9A700355054 /* NaverShoppingModel.swift in Sources */,
 				17A5C1E02AA9AE9400355054 /* Extension+ID.swift in Sources */,
 				17A5C1E92AA9BBD400355054 /* APIManager.swift in Sources */,
+				17A5C1EE2AAA1D8B00355054 /* SortButton.swift in Sources */,
 				17A5C1CF2AA9A66D00355054 /* BaseViewController.swift in Sources */,
 				17A5C1E72AA9BACF00355054 /* APIKeys.swift in Sources */,
 				17A5C1BC2AA9A4DC00355054 /* ViewController.swift in Sources */,
 				17A5C1B82AA9A4DC00355054 /* AppDelegate.swift in Sources */,
 				17A5C1CC2AA9A5E500355054 /* ShoppingSearchViewController.swift in Sources */,
 				17A5C1DD2AA9AD0100355054 /* ShoppingListCollectionViewCell.swift in Sources */,
+				17A5C1F02AAA233300355054 /* SortEnum.swift in Sources */,
 				17A5C1BA2AA9A4DC00355054 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

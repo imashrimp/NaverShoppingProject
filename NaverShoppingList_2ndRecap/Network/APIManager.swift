@@ -14,10 +14,11 @@ class APIManager {
     
     private init() { }
     
-    func callRequest(keyword: String, completionHandler: @escaping (NaverShopping) -> ()) {
+    func callRequest(keyword: String, sort: String , completionHandler: @escaping (NaverShopping) -> ()) {
         
         let text = "\(keyword)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
-        let url = "https://openapi.naver.com/v1/search/shop.json?query=\(text)&display=30&sort=sim"
+        let sort = "\(sort)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+        let url = "https://openapi.naver.com/v1/search/shop.json?query=\(text)&display=30&sort=\(sort)"
         
         let header: HTTPHeaders = [
             APIHeader.id: APIkey.clientID,
