@@ -22,8 +22,10 @@ class ShoppingSearchViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configure()
-        setConstratints()
+        
+        APIManager.shared.callRequest(keyword: "사과") { result in
+            dump(result)
+        }
     }
     
     override func configure() {
