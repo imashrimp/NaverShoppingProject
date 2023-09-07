@@ -11,21 +11,89 @@ import SnapKit
 final
 class ShoppingListCollectionViewCell: UICollectionViewCell {
     
-    let label = {
+    let productImage = {
+        let view = UIImageView()
+        view.contentMode = .scaleAspectFill
+        view.clipsToBounds = true
+        view.layer.cornerRadius = 15 //MARK: - 이거 바뀔 수 있음
+        return view
+    }()
+    
+    let likeButton = {
+        let view = UIButton()
+        view.backgroundColor = .white
+        view.tintColor = .black
+        view.setImage(UIImage(systemName: "heart"), for: .normal)
+        return view
+    }()
+    
+    let mallNameLabel = {
         let view = UILabel()
-        view.text = "이거 됩니까?"
-        view.textAlignment = .center
+        view.font = .systemFont(ofSize: 13)
+        view.textAlignment = .left
+        view.textColor = .darkGray
+        return view
+    }()
+    
+    let titleLabel = {
+        let view = UILabel()
+        view.font = .systemFont(ofSize: 14)
+        view.textAlignment = .left
+        view.textColor = .white
+        view.numberOfLines = 2
+        return view
+    }()
+    
+    let lpriceLabel = {
+        let view = UILabel()
+        view.font = .systemFont(ofSize: 15, weight: .bold)
+        view.textAlignment = .left
+        view.textColor = .white
         return view
     }()
     
     private func configure() {
-        contentView.backgroundColor = .yellow
-        contentView.addSubview(label)
+        contentView.backgroundColor = .black
+        [
+        productImage,
+        likeButton,
+        mallNameLabel,
+        titleLabel,
+        lpriceLabel
+        ].forEach {
+            contentView.addSubview($0)
+        }
+
     }
     
     private func setConstraints() {
-        label.snp.makeConstraints { make in
-            make.center.equalToSuperview()
+        productImage.snp.makeConstraints { make in
+            make.horizontalEdges.top.equalToSuperview().inset(4)
+            make.height.equalTo(productImage.snp.width)
+        }
+        
+        likeButton.snp.makeConstraints { make in
+            make.bottom.trailing.equalTo(productImage).inset(8)
+            make.size.equalTo(44) //MARK: - 사이즈 조정 가능
+        }
+        
+        mallNameLabel.snp.makeConstraints { make in
+            make.leading.equalTo(productImage.snp.leading).offset(4)
+            make.trailing.equalTo(productImage.snp.trailing).inset(4)
+            make.top.equalTo(productImage.snp.bottom).offset(6)
+        }
+        
+        titleLabel.snp.makeConstraints { make in
+            make.leading.equalTo(productImage.snp.leading).offset(4)
+            make.trailing.equalTo(productImage.snp.trailing).inset(4)
+            make.top.equalTo(mallNameLabel.snp.bottom).offset(6)
+        }
+        
+        lpriceLabel.snp.makeConstraints { make in
+            make.leading.equalTo(productImage.snp.leading).offset(4)
+            make.trailing.equalTo(productImage.snp.trailing).inset(4)
+            make.top.equalTo(titleLabel.snp.bottom).offset(6)
+            make.bottom.equalToSuperview().inset(4)
         }
     }
     
@@ -38,5 +106,10 @@ class ShoppingListCollectionViewCell: UICollectionViewCell {
     @available(*, unavailable) //MARK: - 이게 여기서 되는게 맞았나...? 아니였던거 같은데...?
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func layoutSublayers(of layer: CALayer) {
+        super.layoutSublayers(of: layer)
+        likeButton.layer.cornerRadius = 22
     }
 }

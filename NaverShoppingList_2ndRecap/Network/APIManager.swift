@@ -31,6 +31,7 @@ class APIManager {
                 switch result {
                 case .success(let success):
                     completionHandler(success)
+                    dump(success)
                 case .failure(let error):
                     //MARK: - 여기 수정
                     print(error)

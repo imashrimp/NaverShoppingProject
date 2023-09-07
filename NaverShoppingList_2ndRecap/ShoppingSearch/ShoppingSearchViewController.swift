@@ -9,6 +9,8 @@ import UIKit
 
 class ShoppingSearchViewController: BaseViewController {
     
+    var shoppingList: NaverShopping?
+    
     lazy var collectionView = {
         let view = UICollectionView(frame: .zero,
                                     collectionViewLayout: collectionViewFlowLayout())
@@ -19,18 +21,23 @@ class ShoppingSearchViewController: BaseViewController {
         return view
     }()
     
+    lazy var searchController = {
+        let view = UISearchController(searchResultsController: nil)
+        view.searchBar.placeholder = "검색어를 입력해주세요"
+        view.searchBar.delegate = self
+        return view
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        APIManager.shared.callRequest(keyword: "사과") { result in
-            dump(result)
-        }
     }
     
     override func configure() {
         super.configure()
         view.addSubview(collectionView)
+        navigationItem.searchController = searchController
+        navigationItem.title = "쇼핑 검색"
+        navigationItem.hidesSearchBarWhenScrolling = true
     }
     
     override func setConstratints() {
@@ -57,6 +64,27 @@ class ShoppingSearchViewController: BaseViewController {
     }
 }
 
+extension ShoppingSearchViewController: UISearchBarDelegate {
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+
+        shoppingList = nil
+        
+        guard let text = searchBar.text else { return }
+        
+        APIManager.shared.callRequest(keyword: text) { result in
+            self.shoppingList = result
+            self.collectionView.reloadData()
+        }
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.text = ""
+        shoppingList = nil //MARK: - 이래도 에러가 안 터지나...?
+        collectionView.reloadData()
+    }
+}
+
 extension ShoppingSearchViewController: UICollectionViewDelegate {
     
 }
@@ -64,7 +92,10 @@ extension ShoppingSearchViewController: UICollectionViewDelegate {
 extension ShoppingSearchViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 1
+        
+        guard let myshoppingList = shoppingList else { return 0 }
+        
+        return myshoppingList.items.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -74,10 +105,30 @@ extension ShoppingSearchViewController: UICollectionViewDataSource {
                 withReuseIdentifier: ShoppingListCollectionViewCell.id,
                 for: indexPath
             )
-                as? ShoppingListCollectionViewCell else {
+                as? ShoppingListCollectionViewCell,
+            let myShoppingList = shoppingList,
+            let url = URL(string: myShoppingList.items[indexPath.row].image) else {
             return UICollectionViewCell()
         }
         
+        let item = myShoppingList.items[indexPath.row]
+        
+        cell.mallNameLabel.text = item.mallName
+        cell.titleLabel.text = item.title
+        cell.lpriceLabel.text = item.lprice
+        
+        DispatchQueue.global().async {
+            do {
+                let data = try Data(contentsOf: url)
+                DispatchQueue.main.async {
+                    cell.productImage.image = UIImage(data: data)
+                }
+            } catch {
+                DispatchQueue.main.async {
+                    cell.productImage.image = UIImage(systemName: "questionmark.app.fill")
+                }
+            }
+        }
         return cell
     }
 }
