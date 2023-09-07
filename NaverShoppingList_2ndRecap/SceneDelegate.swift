@@ -15,8 +15,22 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let scene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: scene)
-        let vc = ShoppingSearchViewController()
-        window?.rootViewController = UINavigationController(rootViewController: vc)
+
+        let vc1 = ShoppingSearchViewController()
+        
+        let searchVC = UINavigationController(rootViewController: vc1)
+        
+        let tabBarController = UITabBarController()
+        tabBarController.tabBar.tintColor = .black
+        tabBarController.setViewControllers([searchVC], animated: true)
+        
+        if let items = tabBarController.tabBar.items {
+            items[0].image = UIImage(systemName: "magnifyingglass.circle")
+            items[0].selectedImage = UIImage(systemName: "magnifyingglass.circle.fill")
+            items[0].title = "검색"
+        }
+        
+        window?.rootViewController = tabBarController
         window?.makeKeyAndVisible()
     }
 
