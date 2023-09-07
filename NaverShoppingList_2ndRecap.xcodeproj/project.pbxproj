@@ -10,9 +10,16 @@
 		17A5C1B82AA9A4DC00355054 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A5C1B72AA9A4DC00355054 /* AppDelegate.swift */; };
 		17A5C1BA2AA9A4DC00355054 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A5C1B92AA9A4DC00355054 /* SceneDelegate.swift */; };
 		17A5C1BC2AA9A4DC00355054 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A5C1BB2AA9A4DC00355054 /* ViewController.swift */; };
-		17A5C1BF2AA9A4DC00355054 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 17A5C1BD2AA9A4DC00355054 /* Main.storyboard */; };
 		17A5C1C12AA9A4DD00355054 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 17A5C1C02AA9A4DD00355054 /* Assets.xcassets */; };
 		17A5C1C42AA9A4DD00355054 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 17A5C1C22AA9A4DD00355054 /* LaunchScreen.storyboard */; };
+		17A5C1CC2AA9A5E500355054 /* ShoppingSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A5C1CB2AA9A5E500355054 /* ShoppingSearchViewController.swift */; };
+		17A5C1CF2AA9A66D00355054 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A5C1CE2AA9A66D00355054 /* BaseViewController.swift */; };
+		17A5C1D32AA9A7E600355054 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 17A5C1D22AA9A7E600355054 /* SnapKit */; };
+		17A5C1D62AA9A7F300355054 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 17A5C1D52AA9A7F300355054 /* Alamofire */; };
+		17A5C1D92AA9A82200355054 /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = 17A5C1D82AA9A82200355054 /* Realm */; };
+		17A5C1DB2AA9A82300355054 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 17A5C1DA2AA9A82300355054 /* RealmSwift */; };
+		17A5C1DD2AA9AD0100355054 /* ShoppingListCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A5C1DC2AA9AD0100355054 /* ShoppingListCollectionViewCell.swift */; };
+		17A5C1E02AA9AE9400355054 /* Extension+ID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A5C1DF2AA9AE9400355054 /* Extension+ID.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,10 +27,13 @@
 		17A5C1B72AA9A4DC00355054 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		17A5C1B92AA9A4DC00355054 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		17A5C1BB2AA9A4DC00355054 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		17A5C1BE2AA9A4DC00355054 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		17A5C1C02AA9A4DD00355054 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		17A5C1C32AA9A4DD00355054 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		17A5C1C52AA9A4DD00355054 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		17A5C1CB2AA9A5E500355054 /* ShoppingSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingSearchViewController.swift; sourceTree = "<group>"; };
+		17A5C1CE2AA9A66D00355054 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
+		17A5C1DC2AA9AD0100355054 /* ShoppingListCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingListCollectionViewCell.swift; sourceTree = "<group>"; };
+		17A5C1DF2AA9AE9400355054 /* Extension+ID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+ID.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,6 +41,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				17A5C1DB2AA9A82300355054 /* RealmSwift in Frameworks */,
+				17A5C1D92AA9A82200355054 /* Realm in Frameworks */,
+				17A5C1D32AA9A7E600355054 /* SnapKit in Frameworks */,
+				17A5C1D62AA9A7F300355054 /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -56,15 +70,42 @@
 		17A5C1B62AA9A4DC00355054 /* NaverShoppingList_2ndRecap */ = {
 			isa = PBXGroup;
 			children = (
+				17A5C1DE2AA9AE8300355054 /* Extension */,
+				17A5C1CD2AA9A65800355054 /* Base */,
+				17A5C1D02AA9A72600355054 /* ShoppingSearch */,
 				17A5C1B72AA9A4DC00355054 /* AppDelegate.swift */,
 				17A5C1B92AA9A4DC00355054 /* SceneDelegate.swift */,
 				17A5C1BB2AA9A4DC00355054 /* ViewController.swift */,
-				17A5C1BD2AA9A4DC00355054 /* Main.storyboard */,
 				17A5C1C02AA9A4DD00355054 /* Assets.xcassets */,
 				17A5C1C22AA9A4DD00355054 /* LaunchScreen.storyboard */,
 				17A5C1C52AA9A4DD00355054 /* Info.plist */,
 			);
 			path = NaverShoppingList_2ndRecap;
+			sourceTree = "<group>";
+		};
+		17A5C1CD2AA9A65800355054 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				17A5C1CE2AA9A66D00355054 /* BaseViewController.swift */,
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
+		17A5C1D02AA9A72600355054 /* ShoppingSearch */ = {
+			isa = PBXGroup;
+			children = (
+				17A5C1CB2AA9A5E500355054 /* ShoppingSearchViewController.swift */,
+				17A5C1DC2AA9AD0100355054 /* ShoppingListCollectionViewCell.swift */,
+			);
+			path = ShoppingSearch;
+			sourceTree = "<group>";
+		};
+		17A5C1DE2AA9AE8300355054 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				17A5C1DF2AA9AE9400355054 /* Extension+ID.swift */,
+			);
+			path = Extension;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -83,6 +124,12 @@
 			dependencies = (
 			);
 			name = NaverShoppingList_2ndRecap;
+			packageProductDependencies = (
+				17A5C1D22AA9A7E600355054 /* SnapKit */,
+				17A5C1D52AA9A7F300355054 /* Alamofire */,
+				17A5C1D82AA9A82200355054 /* Realm */,
+				17A5C1DA2AA9A82300355054 /* RealmSwift */,
+			);
 			productName = NaverShoppingList_2ndRecap;
 			productReference = 17A5C1B42AA9A4DC00355054 /* NaverShoppingList_2ndRecap.app */;
 			productType = "com.apple.product-type.application";
@@ -111,6 +158,11 @@
 				Base,
 			);
 			mainGroup = 17A5C1AB2AA9A4DC00355054;
+			packageReferences = (
+				17A5C1D12AA9A7E600355054 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				17A5C1D42AA9A7F300355054 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				17A5C1D72AA9A82200355054 /* XCRemoteSwiftPackageReference "realm-swift" */,
+			);
 			productRefGroup = 17A5C1B52AA9A4DC00355054 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -127,7 +179,6 @@
 			files = (
 				17A5C1C42AA9A4DD00355054 /* LaunchScreen.storyboard in Resources */,
 				17A5C1C12AA9A4DD00355054 /* Assets.xcassets in Resources */,
-				17A5C1BF2AA9A4DC00355054 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -138,8 +189,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				17A5C1E02AA9AE9400355054 /* Extension+ID.swift in Sources */,
+				17A5C1CF2AA9A66D00355054 /* BaseViewController.swift in Sources */,
 				17A5C1BC2AA9A4DC00355054 /* ViewController.swift in Sources */,
 				17A5C1B82AA9A4DC00355054 /* AppDelegate.swift in Sources */,
+				17A5C1CC2AA9A5E500355054 /* ShoppingSearchViewController.swift in Sources */,
+				17A5C1DD2AA9AD0100355054 /* ShoppingListCollectionViewCell.swift in Sources */,
 				17A5C1BA2AA9A4DC00355054 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -147,14 +202,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		17A5C1BD2AA9A4DC00355054 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				17A5C1BE2AA9A4DC00355054 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		17A5C1C22AA9A4DD00355054 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -292,9 +339,9 @@
 				INFOPLIST_FILE = NaverShoppingList_2ndRecap/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -302,9 +349,12 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.hyeonseok.NaverShoppingList-2ndRecap";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -320,9 +370,9 @@
 				INFOPLIST_FILE = NaverShoppingList_2ndRecap/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -330,9 +380,12 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.hyeonseok.NaverShoppingList-2ndRecap";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -358,6 +411,56 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		17A5C1D12AA9A7E600355054 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+		17A5C1D42AA9A7F300355054 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+		17A5C1D72AA9A82200355054 /* XCRemoteSwiftPackageReference "realm-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/realm-swift.git";
+			requirement = {
+				kind = exactVersion;
+				version = 10.42.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		17A5C1D22AA9A7E600355054 /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 17A5C1D12AA9A7E600355054 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+		17A5C1D52AA9A7F300355054 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 17A5C1D42AA9A7F300355054 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+		17A5C1D82AA9A82200355054 /* Realm */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 17A5C1D72AA9A82200355054 /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = Realm;
+		};
+		17A5C1DA2AA9A82300355054 /* RealmSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 17A5C1D72AA9A82200355054 /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = RealmSwift;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 17A5C1AC2AA9A4DC00355054 /* Project object */;
 }
