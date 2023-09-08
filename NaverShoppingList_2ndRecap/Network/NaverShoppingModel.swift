@@ -16,12 +16,11 @@ struct NaverShopping: Codable {
 // MARK: - Item
 struct Item: Codable {
     let title: String
-    let link: String
     let image: String
-    let lprice, hprice, mallName, productID: String
+    let lprice, mallName, productID: String
 
     enum CodingKeys: String, CodingKey {
-        case title, link, image, lprice, hprice, mallName
+        case title, image, lprice, mallName
         case productID = "productId"
     }
 }

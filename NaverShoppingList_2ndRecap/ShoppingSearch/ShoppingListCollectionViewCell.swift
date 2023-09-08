@@ -8,8 +8,10 @@
 import UIKit
 import SnapKit
 
-final
+
 class ShoppingListCollectionViewCell: UICollectionViewCell {
+    
+    var likeButtonAction: (() ->())?
     
     let productImage = {
         let view = UIImageView()
@@ -23,7 +25,6 @@ class ShoppingListCollectionViewCell: UICollectionViewCell {
         let view = UIButton()
         view.backgroundColor = .white
         view.tintColor = .black
-        view.setImage(UIImage(systemName: "heart"), for: .normal)
         return view
     }()
     
@@ -31,7 +32,7 @@ class ShoppingListCollectionViewCell: UICollectionViewCell {
         let view = UILabel()
         view.font = .systemFont(ofSize: 13)
         view.textAlignment = .left
-        view.textColor = .darkGray
+        view.textColor = .lightGray
         return view
     }()
     
@@ -63,6 +64,14 @@ class ShoppingListCollectionViewCell: UICollectionViewCell {
         ].forEach {
             contentView.addSubview($0)
         }
+        
+        likeButton.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
+    }
+    
+    @objc
+    func likeButtonTapped() {
+        print(#function)
+        likeButtonAction?()
 
     }
     

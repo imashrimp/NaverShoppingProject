@@ -6,19 +6,20 @@
 //
 
 import UIKit
+import RealmSwift
 
 class ShoppingSearchViewController: BaseViewController {
     
-//    var shoppingList: NaverShopping?
-    var searchedShoppingList: [Item] = []
+    let realm = try! Realm()
+    
+//    var savedShoppingList: Results<ShoppingItem>?
+    var shoppingList: [Item] = []
     var sortKeyword: String = "sim"
     var currentPage: Int = 1
     var lastPage: Int?
     var totalDataCount: Int? {
         didSet {
             calculateLastPage()
-            print("========")
-            print(totalDataCount)
         }
     }
     var displayCount: Int = 30
@@ -100,7 +101,7 @@ class ShoppingSearchViewController: BaseViewController {
         APIManager.shared.callRequest(keyword: text, sort: sortKeyword, page: currentPage) { result in
 
             self.totalDataCount = result.total
-            self.searchedShoppingList.append(contentsOf: result.items)
+            self.shoppingList.append(contentsOf: result.items)
             self.collectionView.reloadData()
         }
     }
@@ -112,7 +113,7 @@ class ShoppingSearchViewController: BaseViewController {
         
         APIManager.shared.callRequest(keyword: text, sort: sortKeyword, page: currentPage) { result in
             self.totalDataCount = result.total
-            self.searchedShoppingList.append(contentsOf: result.items)
+            self.shoppingList.append(contentsOf: result.items)
             self.collectionView.reloadData()
         }
     }
@@ -124,7 +125,7 @@ class ShoppingSearchViewController: BaseViewController {
         
         APIManager.shared.callRequest(keyword: text, sort: sortKeyword, page: currentPage) { result in
             self.totalDataCount = result.total
-            self.searchedShoppingList.append(contentsOf: result.items)
+            self.shoppingList.append(contentsOf: result.items)
             self.collectionView.reloadData()
         }
     }
@@ -136,7 +137,7 @@ class ShoppingSearchViewController: BaseViewController {
         
         APIManager.shared.callRequest(keyword: text, sort: sortKeyword, page: currentPage) { result in
             self.totalDataCount = result.total
-            self.searchedShoppingList.append(contentsOf: result.items)
+            self.shoppingList.append(contentsOf: result.items)
             self.collectionView.reloadData()
         }
     }
@@ -209,14 +210,14 @@ extension ShoppingSearchViewController: UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         
-        searchedShoppingList = []
+        shoppingList = []
         
         guard let text = searchBar.text else { return }
         
         APIManager.shared.callRequest(keyword: text, sort: sortKeyword, page: currentPage) { result in
 
             self.totalDataCount = result.total
-            self.searchedShoppingList.append(contentsOf: result.items)
+            self.shoppingList.append(contentsOf: result.items)
             
             self.collectionView.reloadData()
         }
@@ -224,13 +225,18 @@ extension ShoppingSearchViewController: UISearchBarDelegate {
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchBar.text = ""
-        searchedShoppingList = []
+        shoppingList = []
         collectionView.reloadData()
     }
 }
 
 extension ShoppingSearchViewController: UICollectionViewDelegate {
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let vc = ShoppingItemDetailViewController()
+        
+        navigationController?.pushViewController(vc, animated: true)
+    }
     
 }
 
@@ -238,27 +244,21 @@ extension ShoppingSearchViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        return searchedShoppingList.count
+        return shoppingList.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         guard
-            let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: ShoppingListCollectionViewCell.id,
-                for: indexPath
-            )
-                as? ShoppingListCollectionViewCell,
-            let url = URL(string: searchedShoppingList[indexPath.row].image) else {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ShoppingListCollectionViewCell.id,
+                for: indexPath) as? ShoppingListCollectionViewCell,
+            let url = URL(string: shoppingList[indexPath.row].image) else {
             return UICollectionViewCell()
         }
         
-        let item = searchedShoppingList[indexPath.row]
-        
-        cell.mallNameLabel.text = item.mallName
-        cell.titleLabel.text = item.title
-        cell.lpriceLabel.text = item.lprice
-        
+        let item = shoppingList[indexPath.row]
+
+        //상품 이미지 로직
         DispatchQueue.global().async {
             do {
                 let data = try Data(contentsOf: url)
@@ -270,6 +270,25 @@ extension ShoppingSearchViewController: UICollectionViewDataSource {
                     cell.productImage.image = UIImage(systemName: "questionmark.app.fill")
                 }
             }
+        }
+        
+        
+        //버튼 이미지 로직
+        let savedItemList = realm.objects(ShoppingItem.self)
+        
+        if savedItemList.contains(where: { $0.productID == item.productID }) {
+            cell.likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+        } else {
+            cell.likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
+        }
+
+        cell.mallNameLabel.text = item.mallName
+        cell.titleLabel.text = item.title
+        cell.lpriceLabel.text = item.lprice
+        
+        cell.likeButtonAction = { [weak self] in
+            //해당 데이터가 realmDB에 저장되어있는지 필터링 후 이미지 바꾸기
+            
         }
         return cell
     }
@@ -283,11 +302,13 @@ extension ShoppingSearchViewController: UICollectionViewDataSourcePrefetching {
             let endPage = lastPage else { return }
         
         for indexPath in indexPaths {
-            //MARK: - page 범위를 잘 잡아야함 => 일반적인 검색어는 start의 값이 1000을 넘길 수 있지만, 특수한 검색어의 경우 값이 1000이 안될 수 있음 그런 경우 page값을 제한할 수식을 api 호출 데이터인 total과 display값을 사용해 start 값을 제한함
-            if searchedShoppingList.count - 1 == indexPath.row && currentPage < 1000 && currentPage < endPage {
+
+            //MARK: - 이태리물소송아지가죽주황색소파로 검색하면 셀 수가 홀수로 떨어져야 하는데 페이지 수랑 다 괜찮은데 셀이 짝수로 떨어짐
+            //MARK: - prepareForReuse랑 cancelPreFetching 써보자
+            if shoppingList.count - 1 == indexPath.row && currentPage < 1000 && currentPage < endPage {
                 currentPage += 1
                 APIManager.shared.callRequest(keyword: text, sort: sortKeyword, page: currentPage) { result in
-                    self.searchedShoppingList.append(contentsOf: result.items)
+                    self.shoppingList.append(contentsOf: result.items)
                     self.collectionView.reloadData()
                 }
             }
