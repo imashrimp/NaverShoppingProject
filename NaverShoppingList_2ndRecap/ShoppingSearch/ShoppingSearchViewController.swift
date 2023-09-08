@@ -9,9 +9,20 @@ import UIKit
 
 class ShoppingSearchViewController: BaseViewController {
     
-    var shoppingList: NaverShopping?
+//    var shoppingList: NaverShopping?
+    var searchedShoppingList: [Item] = []
     var sortKeyword: String = "sim"
-
+    var currentPage: Int = 1
+    var lastPage: Int?
+    var totalDataCount: Int? {
+        didSet {
+            calculateLastPage()
+            print("========")
+            print(totalDataCount)
+        }
+    }
+    var displayCount: Int = 30
+    
     lazy var searchController = {
         let view = UISearchController(searchResultsController: nil)
         view.searchBar.placeholder = "검색어를 입력해주세요"
@@ -61,12 +72,12 @@ class ShoppingSearchViewController: BaseViewController {
     
     override func configure() {
         super.configure()
-
+        
         [collectionView,
-        simSortButton,
-        dateSortButton,
-        ascSortButton,
-        dscSortButton].forEach {
+         simSortButton,
+         dateSortButton,
+         ascSortButton,
+         dscSortButton].forEach {
             view.addSubview($0)
         }
         
@@ -86,8 +97,10 @@ class ShoppingSearchViewController: BaseViewController {
         
         guard let text = searchController.searchBar.text else { return }
         
-        APIManager.shared.callRequest(keyword: text, sort: sortKeyword) { result in
-            self.shoppingList = result
+        APIManager.shared.callRequest(keyword: text, sort: sortKeyword, page: currentPage) { result in
+
+            self.totalDataCount = result.total
+            self.searchedShoppingList.append(contentsOf: result.items)
             self.collectionView.reloadData()
         }
     }
@@ -97,8 +110,9 @@ class ShoppingSearchViewController: BaseViewController {
         
         guard let text = searchController.searchBar.text else { return }
         
-        APIManager.shared.callRequest(keyword: text, sort: sortKeyword) { result in
-            self.shoppingList = result
+        APIManager.shared.callRequest(keyword: text, sort: sortKeyword, page: currentPage) { result in
+            self.totalDataCount = result.total
+            self.searchedShoppingList.append(contentsOf: result.items)
             self.collectionView.reloadData()
         }
     }
@@ -108,8 +122,9 @@ class ShoppingSearchViewController: BaseViewController {
         
         guard let text = searchController.searchBar.text else { return }
         
-        APIManager.shared.callRequest(keyword: text, sort: sortKeyword) { result in
-            self.shoppingList = result
+        APIManager.shared.callRequest(keyword: text, sort: sortKeyword, page: currentPage) { result in
+            self.totalDataCount = result.total
+            self.searchedShoppingList.append(contentsOf: result.items)
             self.collectionView.reloadData()
         }
     }
@@ -119,8 +134,9 @@ class ShoppingSearchViewController: BaseViewController {
         
         guard let text = searchController.searchBar.text else { return }
         
-        APIManager.shared.callRequest(keyword: text, sort: sortKeyword) { result in
-            self.shoppingList = result
+        APIManager.shared.callRequest(keyword: text, sort: sortKeyword, page: currentPage) { result in
+            self.totalDataCount = result.total
+            self.searchedShoppingList.append(contentsOf: result.items)
             self.collectionView.reloadData()
         }
     }
@@ -174,30 +190,47 @@ class ShoppingSearchViewController: BaseViewController {
         
         return layout
     }
+    
+    func calculateLastPage() {
+        
+        guard
+            let total = totalDataCount else { return }
+        
+        if total % displayCount == 0 {
+            lastPage = total / displayCount
+        } else {
+            lastPage = total / displayCount + 1
+        }
+        print("마지막 페이지 값 계산했음!!!!")
+    }
 }
 
 extension ShoppingSearchViewController: UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-
-        shoppingList = nil
+        
+        searchedShoppingList = []
         
         guard let text = searchBar.text else { return }
         
-        APIManager.shared.callRequest(keyword: text, sort: sortKeyword) { result in
-            self.shoppingList = result
+        APIManager.shared.callRequest(keyword: text, sort: sortKeyword, page: currentPage) { result in
+
+            self.totalDataCount = result.total
+            self.searchedShoppingList.append(contentsOf: result.items)
+            
             self.collectionView.reloadData()
         }
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchBar.text = ""
-        shoppingList = nil //MARK: - 이래도 에러가 안 터지나...?
+        searchedShoppingList = []
         collectionView.reloadData()
     }
 }
 
 extension ShoppingSearchViewController: UICollectionViewDelegate {
+    
     
 }
 
@@ -205,9 +238,7 @@ extension ShoppingSearchViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        guard let myshoppingList = shoppingList else { return 0 }
-        
-        return myshoppingList.items.count
+        return searchedShoppingList.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -218,12 +249,11 @@ extension ShoppingSearchViewController: UICollectionViewDataSource {
                 for: indexPath
             )
                 as? ShoppingListCollectionViewCell,
-            let myShoppingList = shoppingList,
-            let url = URL(string: myShoppingList.items[indexPath.row].image) else {
+            let url = URL(string: searchedShoppingList[indexPath.row].image) else {
             return UICollectionViewCell()
         }
         
-        let item = myShoppingList.items[indexPath.row]
+        let item = searchedShoppingList[indexPath.row]
         
         cell.mallNameLabel.text = item.mallName
         cell.titleLabel.text = item.title
@@ -248,5 +278,19 @@ extension ShoppingSearchViewController: UICollectionViewDataSource {
 extension ShoppingSearchViewController: UICollectionViewDataSourcePrefetching {
     func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
         
+        guard
+            let text = searchController.searchBar.text,
+            let endPage = lastPage else { return }
+        
+        for indexPath in indexPaths {
+            //MARK: - page 범위를 잘 잡아야함 => 일반적인 검색어는 start의 값이 1000을 넘길 수 있지만, 특수한 검색어의 경우 값이 1000이 안될 수 있음 그런 경우 page값을 제한할 수식을 api 호출 데이터인 total과 display값을 사용해 start 값을 제한함
+            if searchedShoppingList.count - 1 == indexPath.row && currentPage < 1000 && currentPage < endPage {
+                currentPage += 1
+                APIManager.shared.callRequest(keyword: text, sort: sortKeyword, page: currentPage) { result in
+                    self.searchedShoppingList.append(contentsOf: result.items)
+                    self.collectionView.reloadData()
+                }
+            }
+        }
     }
 }

@@ -14,11 +14,11 @@ class APIManager {
     
     private init() { }
     
-    func callRequest(keyword: String, sort: String , completionHandler: @escaping (NaverShopping) -> ()) {
+    func callRequest(keyword: String, sort: String, page: Int, completionHandler: @escaping (NaverShopping) -> ()) {
         
         let text = "\(keyword)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
         let sort = "\(sort)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
-        let url = "https://openapi.naver.com/v1/search/shop.json?query=\(text)&display=30&sort=\(sort)"
+        let url = "https://openapi.naver.com/v1/search/shop.json?query=\(text)&display=30&sort=\(sort)&start=\(page)"
         
         let header: HTTPHeaders = [
             APIHeader.id: APIkey.clientID,
@@ -32,7 +32,6 @@ class APIManager {
                 switch result {
                 case .success(let success):
                     completionHandler(success)
-                    dump(success)
                 case .failure(let error):
                     //MARK: - 여기 수정
                     print(error)
