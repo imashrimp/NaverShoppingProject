@@ -16,10 +16,12 @@ class ShoppingItem: Object {
     @Persisted var title: String
     @Persisted var lprice: String
     
-    convenience init(mallName: String,
+    convenience init(productID: String,
+                     mallName: String,
                      title: String,
                      lprice: String) {
         self.init()
+        self.productID = productID
         self.mallName = mallName
         self.title = title
         self.lprice = lprice

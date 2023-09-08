@@ -12,7 +12,7 @@ class ShoppingSearchViewController: BaseViewController {
     
     let realm = try! Realm()
     
-//    var savedShoppingList: Results<ShoppingItem>?
+    //    var savedShoppingList: Results<ShoppingItem>?
     var shoppingList: [Item] = []
     var sortKeyword: String = "sim"
     var currentPage: Int = 1
@@ -69,6 +69,7 @@ class ShoppingSearchViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        print(realm.configuration.fileURL)
     }
     
     override func configure() {
@@ -99,7 +100,7 @@ class ShoppingSearchViewController: BaseViewController {
         guard let text = searchController.searchBar.text else { return }
         
         APIManager.shared.callRequest(keyword: text, sort: sortKeyword, page: currentPage) { result in
-
+            
             self.totalDataCount = result.total
             self.shoppingList.append(contentsOf: result.items)
             self.collectionView.reloadData()
@@ -215,7 +216,7 @@ extension ShoppingSearchViewController: UISearchBarDelegate {
         guard let text = searchBar.text else { return }
         
         APIManager.shared.callRequest(keyword: text, sort: sortKeyword, page: currentPage) { result in
-
+            
             self.totalDataCount = result.total
             self.shoppingList.append(contentsOf: result.items)
             
@@ -251,13 +252,13 @@ extension ShoppingSearchViewController: UICollectionViewDataSource {
         
         guard
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ShoppingListCollectionViewCell.id,
-                for: indexPath) as? ShoppingListCollectionViewCell,
+                                                          for: indexPath) as? ShoppingListCollectionViewCell,
             let url = URL(string: shoppingList[indexPath.row].image) else {
             return UICollectionViewCell()
         }
         
         let item = shoppingList[indexPath.row]
-
+        
         //상품 이미지 로직
         DispatchQueue.global().async {
             do {
@@ -281,15 +282,35 @@ extension ShoppingSearchViewController: UICollectionViewDataSource {
         } else {
             cell.likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
         }
+        
+        cell.completionHandler = { [weak self] in
+            
+            //버튼을 눌렀는데 해당 productID가 realmDB에 존재하면,
+            if savedItemList.contains(where: { $0.productID == item.productID }) {
 
+                //트랜잭션 안에서 해당 데이터를 불러와서 realm DB에서 지우자
+                
+                try! self?.realm.write{
+                    let itemToRemove = savedItemList.where { $0.productID == item.productID }
+                    self?.realm.delete(itemToRemove)
+                }
+                cell.likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
+                
+            } else {
+  
+                try! self?.realm.write {
+                    let itemToSave = ShoppingItem(productID: item.productID, mallName: item.mallName, title: item.title, lprice: item.lprice)
+                    self?.realm.add(itemToSave)
+                }
+                
+                cell.likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+            }
+        }
+        
         cell.mallNameLabel.text = item.mallName
         cell.titleLabel.text = item.title
         cell.lpriceLabel.text = item.lprice
         
-        cell.likeButtonAction = { [weak self] in
-            //해당 데이터가 realmDB에 저장되어있는지 필터링 후 이미지 바꾸기
-            
-        }
         return cell
     }
 }
@@ -302,7 +323,7 @@ extension ShoppingSearchViewController: UICollectionViewDataSourcePrefetching {
             let endPage = lastPage else { return }
         
         for indexPath in indexPaths {
-
+            
             //MARK: - 이태리물소송아지가죽주황색소파로 검색하면 셀 수가 홀수로 떨어져야 하는데 페이지 수랑 다 괜찮은데 셀이 짝수로 떨어짐
             //MARK: - prepareForReuse랑 cancelPreFetching 써보자
             if shoppingList.count - 1 == indexPath.row && currentPage < 1000 && currentPage < endPage {
@@ -315,3 +336,4 @@ extension ShoppingSearchViewController: UICollectionViewDataSourcePrefetching {
         }
     }
 }
+

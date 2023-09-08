@@ -11,7 +11,7 @@ import SnapKit
 
 class ShoppingListCollectionViewCell: UICollectionViewCell {
     
-    var likeButtonAction: (() ->())?
+    var completionHandler: (() -> ())?
     
     let productImage = {
         let view = UIImageView()
@@ -40,7 +40,7 @@ class ShoppingListCollectionViewCell: UICollectionViewCell {
         let view = UILabel()
         view.font = .systemFont(ofSize: 14)
         view.textAlignment = .left
-        view.textColor = .white
+        view.textColor = .black
         view.numberOfLines = 2
         return view
     }()
@@ -49,12 +49,12 @@ class ShoppingListCollectionViewCell: UICollectionViewCell {
         let view = UILabel()
         view.font = .systemFont(ofSize: 15, weight: .bold)
         view.textAlignment = .left
-        view.textColor = .white
+        view.textColor = .black
         return view
     }()
     
     private func configure() {
-        contentView.backgroundColor = .black
+        contentView.backgroundColor = .white
         [
         productImage,
         likeButton,
@@ -71,8 +71,7 @@ class ShoppingListCollectionViewCell: UICollectionViewCell {
     @objc
     func likeButtonTapped() {
         print(#function)
-        likeButtonAction?()
-
+        completionHandler?()
     }
     
     private func setConstraints() {
