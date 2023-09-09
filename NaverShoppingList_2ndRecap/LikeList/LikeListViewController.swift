@@ -47,7 +47,7 @@ class LikeListViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        likeItemList = try realm.objects(ShoppingItem.self).sorted(byKeyPath: "date", ascending: false)
+        likeItemList = realm.objects(ShoppingItem.self).sorted(byKeyPath: "date", ascending: false)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -73,6 +73,17 @@ class LikeListViewController: BaseViewController {
 }
 
 extension LikeListViewController: UICollectionViewDelegate {
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let vc = ShoppingItemDetailViewController()
+        guard let list = likeItemList else { return }
+        
+        let item = list[indexPath.row]
+        
+        //MARK: - 여기서 date에 Date()전달해도 문제없나...?
+        vc.realmItem = ShoppingItem(productID: item.productID, mallName: item.mallName, title: item.title, lprice: item.lprice, image: item.image, date: Date())
+        navigationController?.pushViewController(vc, animated: true)
+    }
     
 }
 
@@ -118,8 +129,6 @@ extension LikeListViewController: UICollectionViewDataSource {
             }
             collectionView.reloadData()
         }
-        
-        
         return cell
     }
 }

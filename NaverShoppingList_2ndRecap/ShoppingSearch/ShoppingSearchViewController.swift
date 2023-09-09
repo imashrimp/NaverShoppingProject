@@ -239,16 +239,19 @@ extension ShoppingSearchViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let vc = ShoppingItemDetailViewController()
-        
+        //MARK: - 이거 값 전달 할 때 title값 다듬어보기
+//        vc.productTitle = shoppingList[indexPath.row].title
+//        vc.itemtID = shoppingList[indexPath.row].productID
+        let item = shoppingList[indexPath.row]
+        //MARK: - 여기서 date에 Date()전달해도 문제없나...?
+        vc.realmItem = ShoppingItem(productID: item.productID, mallName: item.mallName, title: item.title, lprice: item.lprice, image: item.image, date: Date())
         navigationController?.pushViewController(vc, animated: true)
     }
-    
 }
 
 extension ShoppingSearchViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        
         return shoppingList.count
     }
     
@@ -278,7 +281,7 @@ extension ShoppingSearchViewController: UICollectionViewDataSource {
         }
         
         
-        //버튼 이미지 로직
+        //버튼 이미지 로직 => Results<ShoppingItem>타입의 매개변수를 받아 메서드를 하나 뺄 수 있을 듯 => realm method로 빼면 될 듯 현재 뷰컨 또는 뷰가 realm이 필요없도록
         let savedItemList = realm.objects(ShoppingItem.self)
         
         if savedItemList.contains(where: { $0.productID == item.productID }) {
