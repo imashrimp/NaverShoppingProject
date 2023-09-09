@@ -31,7 +31,7 @@ class LikeListViewController: BaseViewController {
     lazy var searchController = {
         let view = UISearchController(searchResultsController: nil)
         view.searchBar.placeholder = "검색어를 입력해주세요"
-//        view.searchBar.delegate = self
+        view.searchBar.delegate = self
         return view
     }()
     
@@ -109,6 +109,27 @@ extension LikeListViewController: UICollectionViewDataSource {
         
         return cell
     }
+}
+
+extension LikeListViewController: UISearchBarDelegate {
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        
+        if searchText.isEmpty {
+            likeItemList = realm.objects(ShoppingItem.self)
+        } else {
+            likeItemList = realm.objects(ShoppingItem.self).where{
+                $0.title.contains(searchText)
+            }
+        }
+        collectionView.reloadData()
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        likeItemList = realm.objects(ShoppingItem.self)
+        collectionView.reloadData()
+    }
+    
 }
 
 // 뷰컨 configure
