@@ -17,17 +17,24 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(windowScene: scene)
 
         let vc1 = ShoppingSearchViewController()
+        let vc2 = LikeListViewController()
         
         let searchVC = UINavigationController(rootViewController: vc1)
+        let listVC = UINavigationController(rootViewController: vc2)
         
         let tabBarController = UITabBarController()
+        tabBarController.tabBar.backgroundColor = .white
         tabBarController.tabBar.tintColor = .black
-        tabBarController.setViewControllers([searchVC], animated: true)
+        tabBarController.setViewControllers([searchVC, listVC], animated: true)
         
         if let items = tabBarController.tabBar.items {
             items[0].image = UIImage(systemName: "magnifyingglass.circle")
             items[0].selectedImage = UIImage(systemName: "magnifyingglass.circle.fill")
             items[0].title = "검색"
+            
+            items[1].image = UIImage(systemName: "heart")
+            items[1].image = UIImage(systemName: "heart.fill")
+            items[1].title = "좋아요"
         }
         
         window?.rootViewController = tabBarController

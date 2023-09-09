@@ -12,7 +12,6 @@ class ShoppingSearchViewController: BaseViewController {
     
     let realm = try! Realm()
     
-    //    var savedShoppingList: Results<ShoppingItem>?
     var shoppingList: [Item] = []
     var sortKeyword: String = "sim"
     var currentPage: Int = 1
@@ -72,6 +71,11 @@ class ShoppingSearchViewController: BaseViewController {
         print(realm.configuration.fileURL)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        collectionView.reloadData()
+    }
+    
     override func configure() {
         super.configure()
         
@@ -92,6 +96,9 @@ class ShoppingSearchViewController: BaseViewController {
         dscSortButton.addTarget(self, action: #selector(dscSortButtonTapped), for: .touchUpInside)
         
     }
+    
+    //MARK: - 버튼을 통한 api호출이 실패가 뜸
+    //가능하면 sortKeyword의 값이 이전과 다르면 api호출을 하고 아니면 안 하도록 만들어보자
     
     @objc func simSortButtonTapped() {
         
@@ -144,7 +151,6 @@ class ShoppingSearchViewController: BaseViewController {
     }
     
     override func setConstratints() {
-        super.setConstratints()
         
         simSortButton.snp.makeConstraints { make in
             make.leading.top.equalTo(view.safeAreaLayoutGuide).inset(8)
@@ -195,15 +201,13 @@ class ShoppingSearchViewController: BaseViewController {
     
     func calculateLastPage() {
         
-        guard
-            let total = totalDataCount else { return }
+        guard let total = totalDataCount else { return }
         
         if total % displayCount == 0 {
             lastPage = total / displayCount
         } else {
             lastPage = total / displayCount + 1
         }
-        print("마지막 페이지 값 계산했음!!!!")
     }
 }
 
@@ -283,12 +287,12 @@ extension ShoppingSearchViewController: UICollectionViewDataSource {
             cell.likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
         }
         
+        
+        //셀의 버튼 누르면 저장 및 삭제 그리고 버튼 이미지 변경 로직
         cell.completionHandler = { [weak self] in
             
-            //버튼을 눌렀는데 해당 productID가 realmDB에 존재하면,
             if savedItemList.contains(where: { $0.productID == item.productID }) {
 
-                //트랜잭션 안에서 해당 데이터를 불러와서 realm DB에서 지우자
                 
                 try! self?.realm.write{
                     let itemToRemove = savedItemList.where { $0.productID == item.productID }
@@ -299,7 +303,7 @@ extension ShoppingSearchViewController: UICollectionViewDataSource {
             } else {
   
                 try! self?.realm.write {
-                    let itemToSave = ShoppingItem(productID: item.productID, mallName: item.mallName, title: item.title, lprice: item.lprice)
+                    let itemToSave = ShoppingItem(productID: item.productID, mallName: item.mallName, title: item.title, lprice: item.lprice, date: Date())
                     self?.realm.add(itemToSave)
                 }
                 
