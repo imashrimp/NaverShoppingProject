@@ -10,23 +10,22 @@ import SnapKit
 import RealmSwift
 
 class LikeListViewController: BaseViewController {
-
-    //검색 기능 구현하기 => Result<ShoppingItme>타입이면서 해당 검색어를 title값에 포함하는 데이터를 컬렉션 뷰에 나타내기
-    //셀에 이미지 띄우기 => document에 저장해서 해당 파일 로드해오는 방식으로 해보자
+    
+    //셀에 이미지 띄우기 => 우선은 realm Model에 image값을 추가 후 이를 사용해서 이미지를 띄우고, document에 저장해서 해당 파일 로드해오는 방식으로 해보자
     
     let realm = try! Realm()
     
     //여기서 뭔가 할 수 있을거 같은데 아니면 내가 지금 didSet과 willSet 그리고 뷰컨 생명주기 호출 타이밍을 정확하게 몰라서 그런듯.
     var likeItemList: Results<ShoppingItem>? /*{
-        willSet {
-            print("바뀔 예정")
-        }
-        
-        didSet {
-            print("값 바뀜")
-            collectionView.reloadData()
-        }
-    }*/
+                                              willSet {
+                                              print("바뀔 예정")
+                                              }
+                                              
+                                              didSet {
+                                              print("값 바뀜")
+                                              collectionView.reloadData()
+                                              }
+                                              }*/
     
     lazy var searchController = {
         let view = UISearchController(searchResultsController: nil)
@@ -42,7 +41,7 @@ class LikeListViewController: BaseViewController {
                       forCellWithReuseIdentifier: ShoppingListCollectionViewCell.id)
         view.delegate = self
         view.dataSource = self
-//        view.prefetchDataSource = self
+        //        view.prefetchDataSource = self
         return view
     }()
     
@@ -87,11 +86,25 @@ extension LikeListViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ShoppingListCollectionViewCell.id, for: indexPath) as? ShoppingListCollectionViewCell,
-        let itemList = likeItemList else { return UICollectionViewCell() }
+              let itemList = likeItemList,
+              let url = URL(string: itemList[indexPath.row].image) else {
+            return UICollectionViewCell()
+        }
         
         let item = itemList[indexPath.row]
         
-        cell.productImage.image = UIImage(systemName: "star")
+        DispatchQueue.global().async {
+            do {
+                let data = try Data(contentsOf: url)
+                DispatchQueue.main.async {
+                    cell.productImage.image = UIImage(data: data)
+                }
+                
+            } catch {
+                cell.productImage.image = UIImage(systemName: "star")
+            }
+        }
+        
         cell.likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
         cell.likeButton.setImage(UIImage(systemName: "heart"), for: .highlighted)
         cell.mallNameLabel.text = item.mallName

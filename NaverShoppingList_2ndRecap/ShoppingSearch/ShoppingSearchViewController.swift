@@ -303,7 +303,7 @@ extension ShoppingSearchViewController: UICollectionViewDataSource {
             } else {
   
                 try! self?.realm.write {
-                    let itemToSave = ShoppingItem(productID: item.productID, mallName: item.mallName, title: item.title, lprice: item.lprice, date: Date())
+                    let itemToSave = ShoppingItem(productID: item.productID, mallName: item.mallName, title: item.title, lprice: item.lprice, image: item.image,  date: Date())
                     self?.realm.add(itemToSave)
                 }
                 
