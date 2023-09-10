@@ -8,12 +8,9 @@
 //MARK: - 스크롤을 내린 상태에서 다른 검색어로 검색을 하면 화면이 최상단으로 안 감.
 
 import UIKit
-import RealmSwift
-import Kingfisher
 
 class ShoppingSearchViewController: BaseViewController {
     
-    let realm = try! Realm()
     var shoppingList: [Item] = [] {
         didSet {
             mainView.collectionView.reloadData()
@@ -45,7 +42,7 @@ class ShoppingSearchViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(realm.configuration.fileURL)
+        repository.printRealmDocumentURL()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -65,56 +62,72 @@ class ShoppingSearchViewController: BaseViewController {
         
         mainView.simSortButton.addTarget(self, action: #selector(simSortButtonTapped), for: .touchUpInside)
         mainView.dateSortButton.addTarget(self, action: #selector(dateSortButtonTapped), for: .touchUpInside)
-        mainView.ascSortButton.addTarget(self, action: #selector(ascSortButtonTapped), for: .touchUpInside)
-        mainView.dscSortButton.addTarget(self, action: #selector(dscSortButtonTapped), for: .touchUpInside)
+        mainView.ascSortButton.addTarget(self, action: #selector(dscSortButtonTapped), for: .touchUpInside)
+        mainView.dscSortButton.addTarget(self, action: #selector(ascSortButtonTapped), for: .touchUpInside)
         
     }
     
     //MARK: - 버튼을 통한 api호출이 실패가 뜸
     //가능하면 sortKeyword의 값이 이전과 다르면 api호출을 하고 아니면 안 하도록 만들어보자
-    
     @objc func simSortButtonTapped() {
+        
+        shoppingList = []
         
         sortKeyword = SortEnum.sim.rawValue
         
         guard let text = searchController.searchBar.text else { return }
-        print(text)
+        print(sortKeyword)
         APIManager.shared.callRequest(keyword: text, sort: sortKeyword, page: currentPage) { result in
             
             self.totalDataCount = result.total
+            self.shoppingList = result.items
             self.shoppingList.append(contentsOf: result.items)
         }
     }
     
     @objc func dateSortButtonTapped() {
+        
+        shoppingList = []
+        
         sortKeyword = SortEnum.date.rawValue
         
         guard let text = searchController.searchBar.text else { return }
-        print(text)
+        print(sortKeyword)
+
         APIManager.shared.callRequest(keyword: text, sort: sortKeyword, page: currentPage) { result in
             self.totalDataCount = result.total
+            self.shoppingList = result.items
             self.shoppingList.append(contentsOf: result.items)
         }
     }
     
     @objc func ascSortButtonTapped() {
+        
+        shoppingList = []
+        
         sortKeyword = SortEnum.asc.rawValue
         
         guard let text = searchController.searchBar.text else { return }
-        print(text)
+        print(sortKeyword)
+
         APIManager.shared.callRequest(keyword: text, sort: sortKeyword, page: currentPage) { result in
             self.totalDataCount = result.total
+            self.shoppingList = result.items
             self.shoppingList.append(contentsOf: result.items)
         }
     }
     
     @objc func dscSortButtonTapped() {
+        
+        shoppingList = []
+        
         sortKeyword = SortEnum.dsc.rawValue
         
         guard let text = searchController.searchBar.text else { return }
-        print(text)
+        print(sortKeyword)
         APIManager.shared.callRequest(keyword: text, sort: sortKeyword, page: currentPage) { result in
             self.totalDataCount = result.total
+            self.shoppingList = result.items
             self.shoppingList.append(contentsOf: result.items)
         }
     }

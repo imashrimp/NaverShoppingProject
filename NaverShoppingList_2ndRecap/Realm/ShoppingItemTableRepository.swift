@@ -12,15 +12,15 @@ class ShoppingItemTableRepository {
     
     private let realm = try! Realm()
     
-    //MARK: - 쇼핑목록
+    func printRealmDocumentURL() {
+        print(realm.configuration.fileURL)
+    }
     
-    //1. realmDB에 전체 저장된 데이터 가져오는 메서드
     func readSavedShopplinList() -> Results<ShoppingItem> {
         let result = realm.objects(ShoppingItem.self)
         return result
     }
     
-    //2. 버튼 눌렸을 때 특정 객체를 DB에서 삭제하기 위한 메서드
     func deleteShoppingItem(savedItemList: Results<ShoppingItem>, searchedItemList: Item) {
         try! realm.write {
             let itemToDelete = savedItemList.where { $0.productID == searchedItemList.productID }
@@ -28,7 +28,6 @@ class ShoppingItemTableRepository {
         }
     }
     
-    //3. api로 받아온 데이터를 realm에 저장
     func createShoppingItem(itemToSave: Item) {
         try! realm.write {
             let itemToSave = ShoppingItem(

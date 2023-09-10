@@ -22,15 +22,15 @@ class ShoppingSearchView: BaseView {
         return view
     }()
     
-    let ascSortButton = {
-        let view = SortButton()
-        view.setTitle(" 가격높은순 ", for: .normal)
-        return view
-    }()
-    
     let dscSortButton = {
         let view = SortButton()
         view.setTitle(" 가격낮은순 ", for: .normal)
+        return view
+    }()
+    
+    let ascSortButton = {
+        let view = SortButton()
+        view.setTitle(" 가격높은순 ", for: .normal)
         return view
     }()
     
@@ -40,13 +40,11 @@ class ShoppingSearchView: BaseView {
                                     collectionViewLayout: collectionViewFlowLayout())
         view.register(ShoppingListCollectionViewCell.self,
                       forCellWithReuseIdentifier: ShoppingListCollectionViewCell.id)
-//        view.delegate = self
-//        view.dataSource = self
-//        view.prefetchDataSource = self
         return view
     }()
     
     override func configure() {
+        
         super.configure()
         [
         simSortButton,
@@ -57,7 +55,6 @@ class ShoppingSearchView: BaseView {
         ].forEach {
             addSubview($0)
         }
-        
     }
     
     override func setConstraints() {

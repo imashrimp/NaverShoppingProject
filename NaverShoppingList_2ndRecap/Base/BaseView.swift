@@ -13,7 +13,7 @@ class BaseView: UIView {
         super.init(frame: frame)
         
         configure()
-                setConstraints()
+        setConstraints()
         
     }
     
