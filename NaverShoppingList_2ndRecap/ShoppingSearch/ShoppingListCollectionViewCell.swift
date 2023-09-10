@@ -7,17 +7,20 @@
 
 import UIKit
 import SnapKit
+import RealmSwift
+import Kingfisher
 
 
 class ShoppingListCollectionViewCell: UICollectionViewCell {
     
     var completionHandler: (() -> ())?
+    let repository = ShoppingItemTableRepository()
     
     let productImage = {
         let view = UIImageView()
         view.contentMode = .scaleAspectFill
         view.clipsToBounds = true
-        view.layer.cornerRadius = 15 //MARK: - 이거 바뀔 수 있음
+        view.layer.cornerRadius = 15
         return view
     }()
     
@@ -52,6 +55,39 @@ class ShoppingListCollectionViewCell: UICollectionViewCell {
         view.textColor = .black
         return view
     }()
+        
+    @objc
+    func likeButtonTapped() {
+        completionHandler?()
+    }
+    
+    func showCellContents(searchedShoppingItem: Item, repoShoppingItem: Results<ShoppingItem>, imageURL: URL) {
+        
+        //MARK: - 버튼 이미지 삼항연산자로 빼보자
+        if repoShoppingItem.contains(where: { $0.productID == searchedShoppingItem.productID }) {
+            likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+        } else {
+            likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
+        }
+        
+        mallNameLabel.text = searchedShoppingItem.mallName
+        titleLabel.text = searchedShoppingItem.title
+        lpriceLabel.text = searchedShoppingItem.lprice
+        productImage.kf.setImage(with: imageURL)
+        
+        completionHandler = { [weak self] in
+            if repoShoppingItem.contains(where: { $0.productID == searchedShoppingItem.productID }) {
+                
+                self?.repository.deleteShoppingItem(savedItemList: repoShoppingItem, searchedItemList: searchedShoppingItem)
+                
+                self?.likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
+            } else {
+                self?.repository.createShoppingItem(itemToSave: searchedShoppingItem)
+                
+                self?.likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+            }
+        }
+    }
     
     private func configure() {
         contentView.backgroundColor = .white
@@ -66,12 +102,6 @@ class ShoppingListCollectionViewCell: UICollectionViewCell {
         }
         
         likeButton.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
-    }
-    
-    @objc
-    func likeButtonTapped() {
-        print(#function)
-        completionHandler?()
     }
     
     private func setConstraints() {

@@ -11,6 +11,10 @@
 		17415C0E2AAB1916008E2DEB /* ShoppingItemRealmModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17415C0D2AAB1916008E2DEB /* ShoppingItemRealmModel.swift */; };
 		17415C152AAB7AC2008E2DEB /* LikeListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17415C142AAB7AC2008E2DEB /* LikeListViewController.swift */; };
 		17415C1B2AACBC2E008E2DEB /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 17415C1A2AACBC2E008E2DEB /* Kingfisher */; };
+		17415C1D2AAD526D008E2DEB /* ShoppingSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17415C1C2AAD526D008E2DEB /* ShoppingSearchView.swift */; };
+		17415C1F2AAD53CC008E2DEB /* BaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17415C1E2AAD53CC008E2DEB /* BaseView.swift */; };
+		17415C222AAD5435008E2DEB /* CollectionViewFlowLayoutProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17415C212AAD5435008E2DEB /* CollectionViewFlowLayoutProtocol.swift */; };
+		17415C242AAD5DB6008E2DEB /* ShoppingItemTableRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17415C232AAD5DB6008E2DEB /* ShoppingItemTableRepository.swift */; };
 		17A5C1B82AA9A4DC00355054 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A5C1B72AA9A4DC00355054 /* AppDelegate.swift */; };
 		17A5C1BA2AA9A4DC00355054 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A5C1B92AA9A4DC00355054 /* SceneDelegate.swift */; };
 		17A5C1BC2AA9A4DC00355054 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A5C1BB2AA9A4DC00355054 /* ViewController.swift */; };
@@ -36,6 +40,10 @@
 		17415C0A2AAB0C9D008E2DEB /* ShoppingItemDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingItemDetailViewController.swift; sourceTree = "<group>"; };
 		17415C0D2AAB1916008E2DEB /* ShoppingItemRealmModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingItemRealmModel.swift; sourceTree = "<group>"; };
 		17415C142AAB7AC2008E2DEB /* LikeListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeListViewController.swift; sourceTree = "<group>"; };
+		17415C1C2AAD526D008E2DEB /* ShoppingSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingSearchView.swift; sourceTree = "<group>"; };
+		17415C1E2AAD53CC008E2DEB /* BaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseView.swift; sourceTree = "<group>"; };
+		17415C212AAD5435008E2DEB /* CollectionViewFlowLayoutProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewFlowLayoutProtocol.swift; sourceTree = "<group>"; };
+		17415C232AAD5DB6008E2DEB /* ShoppingItemTableRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingItemTableRepository.swift; sourceTree = "<group>"; };
 		17A5C1B42AA9A4DC00355054 /* NaverShoppingList_2ndRecap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NaverShoppingList_2ndRecap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		17A5C1B72AA9A4DC00355054 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		17A5C1B92AA9A4DC00355054 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -83,6 +91,7 @@
 			isa = PBXGroup;
 			children = (
 				17415C0D2AAB1916008E2DEB /* ShoppingItemRealmModel.swift */,
+				17415C232AAD5DB6008E2DEB /* ShoppingItemTableRepository.swift */,
 			);
 			path = Realm;
 			sourceTree = "<group>";
@@ -93,6 +102,14 @@
 				17415C142AAB7AC2008E2DEB /* LikeListViewController.swift */,
 			);
 			path = LikeList;
+			sourceTree = "<group>";
+		};
+		17415C202AAD540D008E2DEB /* Protocol */ = {
+			isa = PBXGroup;
+			children = (
+				17415C212AAD5435008E2DEB /* CollectionViewFlowLayoutProtocol.swift */,
+			);
+			path = Protocol;
 			sourceTree = "<group>";
 		};
 		17A5C1AB2AA9A4DC00355054 = {
@@ -114,6 +131,7 @@
 		17A5C1B62AA9A4DC00355054 /* NaverShoppingList_2ndRecap */ = {
 			isa = PBXGroup;
 			children = (
+				17415C202AAD540D008E2DEB /* Protocol */,
 				17415C132AAB7AA9008E2DEB /* LikeList */,
 				17415C0C2AAB18FD008E2DEB /* Realm */,
 				17415C092AAB0C75008E2DEB /* ShoppingItemDetail */,
@@ -129,7 +147,6 @@
 				17A5C1C22AA9A4DD00355054 /* LaunchScreen.storyboard */,
 				17A5C1C52AA9A4DD00355054 /* Info.plist */,
 				17A5C1E42AA9BAAF00355054 /* .gitignore */,
-				17A5C1EF2AAA233300355054 /* SortEnum.swift */,
 			);
 			path = NaverShoppingList_2ndRecap;
 			sourceTree = "<group>";
@@ -138,6 +155,7 @@
 			isa = PBXGroup;
 			children = (
 				17A5C1CE2AA9A66D00355054 /* BaseViewController.swift */,
+				17415C1E2AAD53CC008E2DEB /* BaseView.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -145,8 +163,10 @@
 		17A5C1D02AA9A72600355054 /* ShoppingSearch */ = {
 			isa = PBXGroup;
 			children = (
+				17A5C1EF2AAA233300355054 /* SortEnum.swift */,
 				17A5C1CB2AA9A5E500355054 /* ShoppingSearchViewController.swift */,
 				17A5C1DC2AA9AD0100355054 /* ShoppingListCollectionViewCell.swift */,
+				17415C1C2AAD526D008E2DEB /* ShoppingSearchView.swift */,
 			);
 			path = ShoppingSearch;
 			sourceTree = "<group>";
@@ -264,6 +284,8 @@
 				17A5C1E32AA9B9A700355054 /* NaverShoppingModel.swift in Sources */,
 				17A5C1E02AA9AE9400355054 /* Extension+ID.swift in Sources */,
 				17A5C1E92AA9BBD400355054 /* APIManager.swift in Sources */,
+				17415C242AAD5DB6008E2DEB /* ShoppingItemTableRepository.swift in Sources */,
+				17415C1F2AAD53CC008E2DEB /* BaseView.swift in Sources */,
 				17415C152AAB7AC2008E2DEB /* LikeListViewController.swift in Sources */,
 				17A5C1EE2AAA1D8B00355054 /* SortButton.swift in Sources */,
 				17A5C1CF2AA9A66D00355054 /* BaseViewController.swift in Sources */,
@@ -272,7 +294,9 @@
 				17415C0B2AAB0C9D008E2DEB /* ShoppingItemDetailViewController.swift in Sources */,
 				17A5C1BC2AA9A4DC00355054 /* ViewController.swift in Sources */,
 				17A5C1B82AA9A4DC00355054 /* AppDelegate.swift in Sources */,
+				17415C222AAD5435008E2DEB /* CollectionViewFlowLayoutProtocol.swift in Sources */,
 				17A5C1CC2AA9A5E500355054 /* ShoppingSearchViewController.swift in Sources */,
+				17415C1D2AAD526D008E2DEB /* ShoppingSearchView.swift in Sources */,
 				17A5C1DD2AA9AD0100355054 /* ShoppingListCollectionViewCell.swift in Sources */,
 				17A5C1F02AAA233300355054 /* SortEnum.swift in Sources */,
 				17A5C1BA2AA9A4DC00355054 /* SceneDelegate.swift in Sources */,
