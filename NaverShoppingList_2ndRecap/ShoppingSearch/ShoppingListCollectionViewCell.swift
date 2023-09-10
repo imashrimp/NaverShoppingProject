@@ -111,6 +111,16 @@ class ShoppingListCollectionViewCell: UICollectionViewCell {
         setConstraints()
     }
     
+
+//    override func prepareForReuse() {
+//        super.prepareForReuse()
+//        productImage.image = nil
+//        likeButton.imageView?.image = nil
+//        mallNameLabel.text = nil
+//        titleLabel.text = nil
+//        lpriceLabel.text = nil
+//    }
+    
     @available(*, unavailable) //MARK: - 이게 여기서 되는게 맞았나...? 아니였던거 같은데...?
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

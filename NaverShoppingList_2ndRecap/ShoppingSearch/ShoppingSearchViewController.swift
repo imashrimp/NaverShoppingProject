@@ -5,14 +5,20 @@
 //  Created by 권현석 on 2023/09/07.
 //
 
+//MARK: - 스크롤을 내린 상태에서 다른 검색어로 검색을 하면 화면이 최상단으로 안 감.
+
 import UIKit
 import RealmSwift
+import Kingfisher
 
 class ShoppingSearchViewController: BaseViewController {
     
     let realm = try! Realm()
-    
-    var shoppingList: [Item] = []
+    var shoppingList: [Item] = [] {
+        didSet {
+            collectionView.reloadData()
+        }
+    }
     var sortKeyword: String = "sim"
     var currentPage: Int = 1
     var lastPage: Int?
@@ -110,7 +116,6 @@ class ShoppingSearchViewController: BaseViewController {
             
             self.totalDataCount = result.total
             self.shoppingList.append(contentsOf: result.items)
-            self.collectionView.reloadData()
         }
     }
     
@@ -122,7 +127,6 @@ class ShoppingSearchViewController: BaseViewController {
         APIManager.shared.callRequest(keyword: text, sort: sortKeyword, page: currentPage) { result in
             self.totalDataCount = result.total
             self.shoppingList.append(contentsOf: result.items)
-            self.collectionView.reloadData()
         }
     }
     
@@ -134,7 +138,6 @@ class ShoppingSearchViewController: BaseViewController {
         APIManager.shared.callRequest(keyword: text, sort: sortKeyword, page: currentPage) { result in
             self.totalDataCount = result.total
             self.shoppingList.append(contentsOf: result.items)
-            self.collectionView.reloadData()
         }
     }
     
@@ -146,7 +149,6 @@ class ShoppingSearchViewController: BaseViewController {
         APIManager.shared.callRequest(keyword: text, sort: sortKeyword, page: currentPage) { result in
             self.totalDataCount = result.total
             self.shoppingList.append(contentsOf: result.items)
-            self.collectionView.reloadData()
         }
     }
     
@@ -231,20 +233,19 @@ extension ShoppingSearchViewController: UISearchBarDelegate {
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchBar.text = ""
         shoppingList = []
-        collectionView.reloadData()
     }
 }
 
 extension ShoppingSearchViewController: UICollectionViewDelegate {
-    
+//
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let vc = ShoppingItemDetailViewController()
         //MARK: - 이거 값 전달 할 때 title값 다듬어보기
-//        vc.productTitle = shoppingList[indexPath.row].title
-//        vc.itemtID = shoppingList[indexPath.row].productID
         let item = shoppingList[indexPath.row]
         //MARK: - 여기서 date에 Date()전달해도 문제없나...?
         vc.realmItem = ShoppingItem(productID: item.productID, mallName: item.mallName, title: item.title, lprice: item.lprice, image: item.image, date: Date())
+        
+        print(item.mallName)
         navigationController?.pushViewController(vc, animated: true)
     }
 }
@@ -266,57 +267,62 @@ extension ShoppingSearchViewController: UICollectionViewDataSource {
         
         let item = shoppingList[indexPath.row]
         
-        //상품 이미지 로직
-        DispatchQueue.global().async {
-            do {
-                let data = try Data(contentsOf: url)
-                DispatchQueue.main.async {
-                    cell.productImage.image = UIImage(data: data)
-                }
-            } catch {
-                DispatchQueue.main.async {
-                    cell.productImage.image = UIImage(systemName: "questionmark.app.fill")
-                }
-            }
-        }
+        //상품 이미지 로직 => 킹피셔 없이 쓰려면 뭐가 필요하고 필요한걸 어디서 어떻게 써야할까?
+//        DispatchQueue.global().async {
+//            do {
+//                let data = try Data(contentsOf: url)
+////                DispatchQueue.main.async {
+////                    cell.productImage.image = UIImage(data: data)
+////                }
+//                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+//                    cell.productImage.image = UIImage(data: data)
+//                    print("**IMAGE", item.title)
+//                }
+//            } catch {
+//                DispatchQueue.main.async {
+//                    cell.productImage.image = UIImage(systemName: "questionmark.app.fill")
+//                }
+//            }
+//        }
         
         
         //버튼 이미지 로직 => Results<ShoppingItem>타입의 매개변수를 받아 메서드를 하나 뺄 수 있을 듯 => realm method로 빼면 될 듯 현재 뷰컨 또는 뷰가 realm이 필요없도록
         let savedItemList = realm.objects(ShoppingItem.self)
-        
+
         if savedItemList.contains(where: { $0.productID == item.productID }) {
             cell.likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
         } else {
             cell.likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
         }
-        
-        
+
+
         //셀의 버튼 누르면 저장 및 삭제 그리고 버튼 이미지 변경 로직
         cell.completionHandler = { [weak self] in
-            
+
             if savedItemList.contains(where: { $0.productID == item.productID }) {
 
-                
+
                 try! self?.realm.write{
                     let itemToRemove = savedItemList.where { $0.productID == item.productID }
                     self?.realm.delete(itemToRemove)
                 }
                 cell.likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
-                
+
             } else {
-  
+
                 try! self?.realm.write {
                     let itemToSave = ShoppingItem(productID: item.productID, mallName: item.mallName, title: item.title, lprice: item.lprice, image: item.image,  date: Date())
                     self?.realm.add(itemToSave)
                 }
-                
+
                 cell.likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
             }
         }
-        
+
         cell.mallNameLabel.text = item.mallName
         cell.titleLabel.text = item.title
         cell.lpriceLabel.text = item.lprice
+        cell.productImage.kf.setImage(with: url)
         
         return cell
     }
@@ -324,13 +330,13 @@ extension ShoppingSearchViewController: UICollectionViewDataSource {
 
 extension ShoppingSearchViewController: UICollectionViewDataSourcePrefetching {
     func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
-        
+
         guard
             let text = searchController.searchBar.text,
             let endPage = lastPage else { return }
-        
+
         for indexPath in indexPaths {
-            
+
             //MARK: - 이태리물소송아지가죽주황색소파로 검색하면 셀 수가 홀수로 떨어져야 하는데 페이지 수랑 다 괜찮은데 셀이 짝수로 떨어짐
             //MARK: - prepareForReuse랑 cancelPreFetching 써보자
             if shoppingList.count - 1 == indexPath.row && currentPage < 1000 && currentPage < endPage {

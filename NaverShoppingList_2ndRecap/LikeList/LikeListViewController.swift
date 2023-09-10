@@ -8,24 +8,19 @@
 import UIKit
 import SnapKit
 import RealmSwift
+import Kingfisher
 
+//MARK: - 이 화면에도 저장한 데이터가 너무 많아지면 preFetch를 해야 할 거임. realm문서에 prefetch관련 내용이 있는지 찾아보자
 class LikeListViewController: BaseViewController {
     
-    //셀에 이미지 띄우기 => 우선은 realm Model에 image값을 추가 후 이를 사용해서 이미지를 띄우고, document에 저장해서 해당 파일 로드해오는 방식으로 해보자
-    
     let realm = try! Realm()
-    
-    //여기서 뭔가 할 수 있을거 같은데 아니면 내가 지금 didSet과 willSet 그리고 뷰컨 생명주기 호출 타이밍을 정확하게 몰라서 그런듯.
-    var likeItemList: Results<ShoppingItem>? /*{
-                                              willSet {
-                                              print("바뀔 예정")
-                                              }
-                                              
-                                              didSet {
-                                              print("값 바뀜")
-                                              collectionView.reloadData()
-                                              }
-                                              }*/
+
+    var likeItemList: Results<ShoppingItem>? {
+        didSet {
+            print("렘 데이터 바뀜")
+            collectionView.reloadData()
+        }
+    }
     
     lazy var searchController = {
         let view = UISearchController(searchResultsController: nil)
@@ -41,7 +36,6 @@ class LikeListViewController: BaseViewController {
                       forCellWithReuseIdentifier: ShoppingListCollectionViewCell.id)
         view.delegate = self
         view.dataSource = self
-        //        view.prefetchDataSource = self
         return view
     }()
     
@@ -104,24 +98,28 @@ extension LikeListViewController: UICollectionViewDataSource {
         
         let item = itemList[indexPath.row]
         
-        DispatchQueue.global().async {
-            do {
-                let data = try Data(contentsOf: url)
-                DispatchQueue.main.async {
-                    cell.productImage.image = UIImage(data: data)
-                }
-                
-            } catch {
-                cell.productImage.image = UIImage(systemName: "star")
-            }
-        }
+        //MARK: - 여기도 캐싱이랑 prefetch를 취소할 수 있는 방법을 찾으면 아래처럼 구현해보자
+//        DispatchQueue.global().async {
+//            do {
+//                let data = try Data(contentsOf: url)
+//                DispatchQueue.main.async {
+//                    cell.productImage.image = UIImage(data: data)
+//                }
+//
+//            } catch {
+//                cell.productImage.image = UIImage(systemName: "star")
+//            }
+//        }
         
+        cell.productImage.kf.setImage(with: url)
         cell.likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
         cell.likeButton.setImage(UIImage(systemName: "heart"), for: .highlighted)
         cell.mallNameLabel.text = item.mallName
         cell.titleLabel.text = item.title
         cell.lpriceLabel.text = item.lprice
         
+        //MARK: - 여기서는 데이터가 지워져도 데이터의 값이 변하는걸 didSet에서 못 잡아냄 왜...?
+        //여기서는 reloadData해줘야함. 주기가 끝나면 뷰컨과의 참조가 끊겨서 didSet을 통한 데이터 리로드를 할 수 없음.
         cell.completionHandler = { [weak self] in
             try! self?.realm.write {
                 let itemToRemove = itemList.where { $0.productID == item.productID }
@@ -144,17 +142,15 @@ extension LikeListViewController: UISearchBarDelegate {
                 $0.title.contains(searchText)
             }
         }
-        collectionView.reloadData()
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         likeItemList = realm.objects(ShoppingItem.self)
-        collectionView.reloadData()
     }
     
 }
 
-// 뷰컨 configure
+
 extension LikeListViewController {
     
     func collectionViewFlowLayout() -> UICollectionViewFlowLayout {
