@@ -28,12 +28,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         tabBarController.setViewControllers([searchVC, listVC], animated: true)
         
         if let items = tabBarController.tabBar.items {
-            items[0].image = UIImage(systemName: "magnifyingglass.circle")
-            items[0].selectedImage = UIImage(systemName: "magnifyingglass.circle.fill")
+            items[0].image = UIImage(systemName: ButtonImageName.shared.magnifyingglassNone)
+            items[0].selectedImage = UIImage(systemName: ButtonImageName.shared.magnifyingglassSelected)
             items[0].title = "검색"
             
-            items[1].image = UIImage(systemName: "heart")
-            items[1].image = UIImage(systemName: "heart.fill")
+            items[1].image = UIImage(systemName: ButtonImageName.shared.heartNone)
+            items[1].image = UIImage(systemName: ButtonImageName.shared.heartSelected)
             items[1].title = "좋아요"
         }
         

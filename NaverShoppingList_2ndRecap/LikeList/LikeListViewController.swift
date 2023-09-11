@@ -18,19 +18,12 @@ class LikeListViewController: BaseViewController {
     //MARK: - 여기가 shoppingListVC랑 뭐가 다른지 보자
     var likeItemList: Results<ShoppingItem>? {
         didSet {
-            print("**DID SET")
             mainVC.collectionView.reloadData()
         }
     }
     
     private let mainVC = LikeListView()
-    
-    lazy var searchController = {
-        let view = UISearchController(searchResultsController: nil)
-        view.searchBar.placeholder = "검색어를 입력해주세요"
-        view.searchBar.delegate = self
-        return view
-    }()
+    let searchController = CustomSearchController(searchResultsController: nil)
     
     override func loadView() {
         self.view = mainVC
@@ -48,13 +41,15 @@ class LikeListViewController: BaseViewController {
     override func configure() {
         super.configure()
         
+        searchController.searchBar.delegate = self
+        
         mainVC.collectionView.delegate = self
         mainVC.collectionView.dataSource = self
         
         likeItemList = repository.sortLikeItemListByDate()
         
         navigationItem.searchController = searchController
-        navigationItem.title = "좋아요 목록"
+        navigationItem.title = NavigationTitleEnum.likeList.rawValue
         
     }
 }
@@ -67,9 +62,12 @@ extension LikeListViewController: UICollectionViewDelegate {
         
         let item = list[indexPath.row]
         
-        vc.selectedItem = Item(title: item.title, image: item.image, lprice: item.lprice, mallName: item.mallName, productID: item.productID)
+        vc.selectedItem = Item(title: item.title,
+                               image: item.image,
+                               lprice: item.lprice,
+                               mallName: item.mallName,
+                               productID: item.productID)
         
-//        vc.realmItem = ShoppingItem(productID: item.productID, mallName: item.mallName, title: item.title, lprice: item.lprice, image: item.image, date: Date())
         navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -84,23 +82,26 @@ extension LikeListViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ShoppingListCollectionViewCell.id, for: indexPath) as? ShoppingListCollectionViewCell,
-              let itemList = likeItemList,
-              let url = URL(string: itemList[indexPath.row].image) else {
+        guard
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ShoppingListCollectionViewCell.id, for: indexPath) as? ShoppingListCollectionViewCell,
+            let itemList = likeItemList,
+            let url = URL(string: itemList[indexPath.row].image) else {
             return UICollectionViewCell()
         }
         
         let item = itemList[indexPath.row]
         
-        cell.showLikeListCellContents(imageURL: url, savedItem: itemList, index: indexPath.row)
+        cell.showLikeListCellContents(imageURL: url,
+                                      savedItem: itemList,
+                                      index: indexPath.row)
         
         cell.completionHandler = { [weak self] in
-            try! self?.realm.write {
-                let itemToRemove = itemList.where { $0.productID == item.productID }
-                self?.realm.delete(itemToRemove)
+            
+            self?.deleteAlert {
+                self?.repository.deleteLikeItem(savedItemList: itemList, savedItem: item)
+                //MARK: - 컬렉션뷰 리로드를 여기서 안 하려면 Realm의 notification token으로 처리를 해줘야함.
+                collectionView.reloadData()
             }
-            //MARK: - 컬렉션뷰 리로드를 여기서 안 하려면 Realm의 notification token으로 처리를 해줘야함.
-            collectionView.reloadData()
         }
         return cell
     }

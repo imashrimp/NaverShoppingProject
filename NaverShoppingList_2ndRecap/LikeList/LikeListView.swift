@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-class LikeListView: BaseView {
+class LikeListView: BaseView, CollectionViewFlowLayoutProtocol {
     
     lazy var collectionView = {
         let view = UICollectionView(frame: .zero,
@@ -34,7 +34,7 @@ class LikeListView: BaseView {
         let layout = UICollectionViewFlowLayout()
         let space: CGFloat = 8
         let width = (UIScreen.main.bounds.width - (space * 3)) / 2
-        let height = UIScreen.main.bounds.height / 3
+        let height = width + 100
         layout.minimumLineSpacing = 8
         layout.minimumInteritemSpacing = 8
         layout.sectionInset = UIEdgeInsets(top: 8,

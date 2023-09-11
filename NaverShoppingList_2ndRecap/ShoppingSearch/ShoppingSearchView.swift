@@ -7,34 +7,34 @@
 
 import UIKit
 
-class ShoppingSearchView: BaseView {
+class ShoppingSearchView: BaseView, CollectionViewFlowLayoutProtocol {
     
-    //MARK: - 버튼을 컬렉션 뷰로 바꿔서 하면 select 효과를 볼 수 있지 않을까? api 호출 값 전달은 클로저나 델리게이트 쓰고
     let simSortButton = {
         let view = SortButton()
-        view.setTitle(" 정확도 ", for: .normal)
+        view.setTitle("  정확도  ", for: .normal)
+        view.setTitleColor(.white, for: .normal)
+        view.backgroundColor = .black
         return view
     }()
     
     let dateSortButton = {
         let view = SortButton()
-        view.setTitle(" 날짜순 ", for: .normal)
+        view.setTitle("  날짜순  ", for: .normal)
         return view
     }()
     
     let dscSortButton = {
         let view = SortButton()
-        view.setTitle(" 가격낮은순 ", for: .normal)
+        view.setTitle(" 가격높은순 ", for: .normal)
         return view
     }()
     
     let ascSortButton = {
         let view = SortButton()
-        view.setTitle(" 가격높은순 ", for: .normal)
+        view.setTitle(" 가격낮은순 ", for: .normal)
         return view
     }()
     
-    //MARK: - 컬렉션뷰를 커스텀으로 따로 만들어보자
     lazy var collectionView = {
         let view = UICollectionView(frame: .zero,
                                     collectionViewLayout: collectionViewFlowLayout())
@@ -69,16 +69,16 @@ class ShoppingSearchView: BaseView {
             make.leading.equalTo(simSortButton.snp.trailing).offset(16)
         }
         
-        ascSortButton.snp.makeConstraints { make in
+        dscSortButton.snp.makeConstraints { make in
             make.top.equalTo(simSortButton.snp.top)
             make.height.equalTo(44)
             make.leading.equalTo(dateSortButton.snp.trailing).offset(16)
         }
         
-        dscSortButton.snp.makeConstraints { make in
+        ascSortButton.snp.makeConstraints { make in
             make.top.equalTo(simSortButton.snp.top)
             make.height.equalTo(44)
-            make.leading.equalTo(ascSortButton.snp.trailing).offset(16)
+            make.leading.equalTo(dscSortButton.snp.trailing).offset(16)
             make.trailing.lessThanOrEqualToSuperview().inset(8)
         }
         
@@ -93,7 +93,7 @@ class ShoppingSearchView: BaseView {
         let layout = UICollectionViewFlowLayout()
         let space: CGFloat = 8
         let width = (UIScreen.main.bounds.width - (space * 3)) / 2
-        let height = UIScreen.main.bounds.height / 3
+        let height = width + 100
         layout.minimumLineSpacing = 8
         layout.minimumInteritemSpacing = 8
         layout.sectionInset = UIEdgeInsets(top: 8,

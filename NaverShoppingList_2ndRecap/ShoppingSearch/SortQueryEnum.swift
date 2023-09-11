@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum SortEnum: String {
+enum SortQueryEnum: String {
     case sim
     case date
     case asc

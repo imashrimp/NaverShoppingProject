@@ -5,36 +5,31 @@
 //  Created by 권현석 on 2023/09/07.
 //
 
-//MARK: - 스크롤을 내린 상태에서 다른 검색어로 검색을 하면 화면이 최상단으로 안 감.
-
 import UIKit
 
-class ShoppingSearchViewController: BaseViewController {
+final class ShoppingSearchViewController: BaseViewController {
     
-    var shoppingList: [Item] = [] {
+    private var shoppingList: [Item] = [] {
         didSet {
             mainView.collectionView.reloadData()
         }
     }
-    var sortKeyword: String = "sim"
-    var currentPage: Int = 1
-    var lastPage: Int?
-    var totalDataCount: Int? {
+    private var buttonArray: [UIButton] = []
+    private var sortKeyword: String = SortQueryEnum.sim.rawValue
+    private var currentPage: Int = 1
+    private var displayCount: Int = 30
+    private var lastPage: Int?
+    private var totalDataCount: Int? {
         didSet {
             calculateLastPage()
         }
     }
-    var displayCount: Int = 30
     
-    let mainView = ShoppingSearchView()
-    let repository = ShoppingItemTableRepository()
     
-    lazy var searchController = {
-        let view = UISearchController(searchResultsController: nil)
-        view.searchBar.placeholder = "검색어를 입력해주세요"
-        view.searchBar.delegate = self
-        return view
-    }()
+    private let repository = ShoppingItemTableRepository()
+    
+    private let mainView = ShoppingSearchView()
+    private let searchController = CustomSearchController(searchResultsController: nil)
     
     override func loadView() {
         self.view = mainView
@@ -54,85 +49,72 @@ class ShoppingSearchViewController: BaseViewController {
         super.configure()
         
         navigationItem.searchController = searchController
-        navigationItem.title = "쇼핑 검색"
+        navigationItem.title = NavigationTitleEnum.searchShoppingList.rawValue
+        
+        searchController.searchBar.delegate = self
         
         mainView.collectionView.delegate = self
         mainView.collectionView.dataSource = self
         mainView.collectionView.prefetchDataSource = self
         
-        mainView.simSortButton.addTarget(self, action: #selector(simSortButtonTapped), for: .touchUpInside)
-        mainView.dateSortButton.addTarget(self, action: #selector(dateSortButtonTapped), for: .touchUpInside)
-        mainView.ascSortButton.addTarget(self, action: #selector(dscSortButtonTapped), for: .touchUpInside)
-        mainView.dscSortButton.addTarget(self, action: #selector(ascSortButtonTapped), for: .touchUpInside)
+        [
+            mainView.simSortButton,
+            mainView.dateSortButton,
+            mainView.ascSortButton,
+            mainView.dscSortButton
+        ].forEach {
+            buttonArray.append($0)
+            $0.addTarget(self, action: #selector(sortButtonTapped), for: .touchUpInside)
+        }
         
     }
     
-    //MARK: - 버튼을 통한 api호출이 실패가 뜸
-    //가능하면 sortKeyword의 값이 이전과 다르면 api호출을 하고 아니면 안 하도록 만들어보자
-    @objc func simSortButtonTapped() {
+    @objc private func sortButtonTapped(_ sender: UIButton) {
         
-        shoppingList = []
-        
-        sortKeyword = SortEnum.sim.rawValue
-        
-        guard let text = searchController.searchBar.text else { return }
-        print(sortKeyword)
-        APIManager.shared.callRequest(keyword: text, sort: sortKeyword, page: currentPage) { result in
+        for (i, btn) in buttonArray.enumerated() {
             
-            self.totalDataCount = result.total
-            self.shoppingList = result.items
-            self.shoppingList.append(contentsOf: result.items)
+            if btn == sender {
+                setSortKeyword(buttonNumber: i)
+                
+                guard let text = searchController.searchBar.text else { return }
+                
+                APIManager.shared.callRequest(keyword: text,
+                                              sort: sortKeyword,
+                                              page: currentPage) { result in
+                    
+                    self.totalDataCount = result.total
+                    self.shoppingList = result.items
+                    self.shoppingList.append(contentsOf: result.items)
+                }
+                
+                btn.backgroundColor = .black
+                btn.setTitleColor(.white, for: .normal)
+                
+            } else {
+                btn.backgroundColor = .white
+                btn.setTitleColor(.black, for: .normal)
+            }
         }
     }
     
-    @objc func dateSortButtonTapped() {
-        
-        shoppingList = []
-        
-        sortKeyword = SortEnum.date.rawValue
-        
-        guard let text = searchController.searchBar.text else { return }
-        print(sortKeyword)
-
-        APIManager.shared.callRequest(keyword: text, sort: sortKeyword, page: currentPage) { result in
-            self.totalDataCount = result.total
-            self.shoppingList = result.items
-            self.shoppingList.append(contentsOf: result.items)
-        }
-    }
-    
-    @objc func ascSortButtonTapped() {
-        
-        shoppingList = []
-        
-        sortKeyword = SortEnum.asc.rawValue
-        
-        guard let text = searchController.searchBar.text else { return }
-        print(sortKeyword)
-
-        APIManager.shared.callRequest(keyword: text, sort: sortKeyword, page: currentPage) { result in
-            self.totalDataCount = result.total
-            self.shoppingList = result.items
-            self.shoppingList.append(contentsOf: result.items)
-        }
-    }
-    
-    @objc func dscSortButtonTapped() {
-        
-        shoppingList = []
-        
-        sortKeyword = SortEnum.dsc.rawValue
-        
-        guard let text = searchController.searchBar.text else { return }
-        print(sortKeyword)
-        APIManager.shared.callRequest(keyword: text, sort: sortKeyword, page: currentPage) { result in
-            self.totalDataCount = result.total
-            self.shoppingList = result.items
-            self.shoppingList.append(contentsOf: result.items)
+    private func setSortKeyword(buttonNumber: Int) {
+        switch buttonNumber {
+        case 0:
+            sortKeyword = SortQueryEnum.sim.rawValue
+        case 1:
+            sortKeyword = SortQueryEnum.date.rawValue
+        case 2:
+            sortKeyword = SortQueryEnum.asc.rawValue
+        case 3:
+            sortKeyword = SortQueryEnum.dsc.rawValue
+        default:
+            sortKeyword = SortQueryEnum.sim.rawValue
+            print("ERROR")
         }
     }
         
-    func calculateLastPage() {
+    //MARK: - 매개변수 사용하고 반환값 사용하면 될 듯?
+    private func calculateLastPage() {
         
         guard let total = totalDataCount else { return }
         
@@ -146,13 +128,15 @@ class ShoppingSearchViewController: BaseViewController {
 
 extension ShoppingSearchViewController: UISearchBarDelegate {
     
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         
         shoppingList = []
         
         guard let text = searchBar.text else { return }
         
-        APIManager.shared.callRequest(keyword: text, sort: sortKeyword, page: currentPage) { result in
+        APIManager.shared.callRequest(keyword: text,
+                                      sort: sortKeyword,
+                                      page: currentPage) { result in
             
             self.totalDataCount = result.total
             self.shoppingList.append(contentsOf: result.items)
@@ -176,8 +160,11 @@ extension ShoppingSearchViewController: UICollectionViewDelegate {
         
         let trimedTitle = item.title.components(separatedBy: ["<", "b", ">", "/"]).joined()
         
-        vc.selectedItem = Item(title: trimedTitle, image: item.image, lprice: item.lprice, mallName: item.mallName, productID: item.productID)
-//        vc.realmItem = ShoppingItem(productID: item.productID, mallName: item.mallName, title: trimedTitle, lprice: item.lprice, image: item.image, date: Date())
+        vc.selectedItem = Item(title: trimedTitle,
+                               image: item.image,
+                               lprice: item.lprice,
+                               mallName: item.mallName,
+                               productID: item.productID)
         
         navigationController?.pushViewController(vc, animated: true)
     }
@@ -201,11 +188,11 @@ extension ShoppingSearchViewController: UICollectionViewDataSource {
         
         let item = shoppingList[indexPath.row]
         
-        let shoppingItem = ShoppingItem(productID: item.productID, mallName: item.mallName, title: item.title, lprice: item.lprice, image: item.image, date: Date())
-        
         let savedItemList = repository.readSavedShopplinList()
         
-        cell.showSearchedShoppingCellContents(repoShoppingList: savedItemList,searchedShoppingItem: item, imageURL: url)
+        cell.showSearchedShoppingCellContents(repoShoppingList: savedItemList,
+                                              searchedShoppingItem: item,
+                                              imageURL: url)
 
         return cell
     }
@@ -220,11 +207,12 @@ extension ShoppingSearchViewController: UICollectionViewDataSourcePrefetching {
         
         for indexPath in indexPaths {
             
-            //MARK: - 이태리물소송아지가죽주황색소파로 검색하면 셀 수가 홀수로 떨어져야 하는데 페이지 수랑 다 괜찮은데 셀이 짝수로 떨어짐
-            //MARK: - prepareForReuse랑 cancelPreFetching 써보자
             if shoppingList.count - 1 == indexPath.row && currentPage < 1000 && currentPage < endPage {
                 currentPage += 1
-                APIManager.shared.callRequest(keyword: text, sort: sortKeyword, page: currentPage) { result in
+                APIManager.shared.callRequest(keyword: text,
+                                              sort: sortKeyword,
+                                              page: currentPage)
+                { result in
                     self.shoppingList.append(contentsOf: result.items)
                     self.mainView.collectionView.reloadData()
                 }

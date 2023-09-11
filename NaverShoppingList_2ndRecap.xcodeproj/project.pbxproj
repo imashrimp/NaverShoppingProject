@@ -34,8 +34,12 @@
 		17A5C1E72AA9BACF00355054 /* APIKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A5C1E62AA9BACF00355054 /* APIKeys.swift */; };
 		17A5C1E92AA9BBD400355054 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A5C1E82AA9BBD400355054 /* APIManager.swift */; };
 		17A5C1EE2AAA1D8B00355054 /* SortButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A5C1ED2AAA1D8B00355054 /* SortButton.swift */; };
-		17A5C1F02AAA233300355054 /* SortEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A5C1EF2AAA233300355054 /* SortEnum.swift */; };
+		17A5C1F02AAA233300355054 /* SortQueryEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A5C1EF2AAA233300355054 /* SortQueryEnum.swift */; };
 		17DCA8A92AAED55800AA847B /* DetailWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17DCA8A82AAED55800AA847B /* DetailWebView.swift */; };
+		17DCA8AD2AAEF59F00AA847B /* CustomSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17DCA8AC2AAEF59F00AA847B /* CustomSearchController.swift */; };
+		17DCA8AF2AAEF9CA00AA847B /* NavigationTitleValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17DCA8AE2AAEF9CA00AA847B /* NavigationTitleValue.swift */; };
+		17FCFB2E2AAF20C0006B1597 /* ButtonImageName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17FCFB2D2AAF20C0006B1597 /* ButtonImageName.swift */; };
+		17FCFB322AAF34A3006B1597 /* Extension+DeleteItemAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17FCFB312AAF34A3006B1597 /* Extension+DeleteItemAlert.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -63,8 +67,12 @@
 		17A5C1E62AA9BACF00355054 /* APIKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIKeys.swift; sourceTree = "<group>"; };
 		17A5C1E82AA9BBD400355054 /* APIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
 		17A5C1ED2AAA1D8B00355054 /* SortButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortButton.swift; sourceTree = "<group>"; };
-		17A5C1EF2AAA233300355054 /* SortEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortEnum.swift; sourceTree = "<group>"; };
+		17A5C1EF2AAA233300355054 /* SortQueryEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortQueryEnum.swift; sourceTree = "<group>"; };
 		17DCA8A82AAED55800AA847B /* DetailWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailWebView.swift; sourceTree = "<group>"; };
+		17DCA8AC2AAEF59F00AA847B /* CustomSearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSearchController.swift; sourceTree = "<group>"; };
+		17DCA8AE2AAEF9CA00AA847B /* NavigationTitleValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationTitleValue.swift; sourceTree = "<group>"; };
+		17FCFB2D2AAF20C0006B1597 /* ButtonImageName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonImageName.swift; sourceTree = "<group>"; };
+		17FCFB312AAF34A3006B1597 /* Extension+DeleteItemAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+DeleteItemAlert.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -141,7 +149,7 @@
 				17415C132AAB7AA9008E2DEB /* LikeList */,
 				17415C0C2AAB18FD008E2DEB /* Realm */,
 				17415C092AAB0C75008E2DEB /* ShoppingItemDetail */,
-				17A5C1EC2AAA1D2300355054 /* CustomUI */,
+				17A5C1EC2AAA1D2300355054 /* Custom */,
 				17A5C1E12AA9B99200355054 /* Network */,
 				17A5C1DE2AA9AE8300355054 /* Extension */,
 				17A5C1CD2AA9A65800355054 /* Base */,
@@ -153,6 +161,8 @@
 				17A5C1C22AA9A4DD00355054 /* LaunchScreen.storyboard */,
 				17A5C1C52AA9A4DD00355054 /* Info.plist */,
 				17A5C1E42AA9BAAF00355054 /* .gitignore */,
+				17DCA8AE2AAEF9CA00AA847B /* NavigationTitleValue.swift */,
+				17FCFB2D2AAF20C0006B1597 /* ButtonImageName.swift */,
 			);
 			path = NaverShoppingList_2ndRecap;
 			sourceTree = "<group>";
@@ -169,7 +179,7 @@
 		17A5C1D02AA9A72600355054 /* ShoppingSearch */ = {
 			isa = PBXGroup;
 			children = (
-				17A5C1EF2AAA233300355054 /* SortEnum.swift */,
+				17A5C1EF2AAA233300355054 /* SortQueryEnum.swift */,
 				17A5C1CB2AA9A5E500355054 /* ShoppingSearchViewController.swift */,
 				17A5C1DC2AA9AD0100355054 /* ShoppingListCollectionViewCell.swift */,
 				17415C1C2AAD526D008E2DEB /* ShoppingSearchView.swift */,
@@ -181,6 +191,7 @@
 			isa = PBXGroup;
 			children = (
 				17A5C1DF2AA9AE9400355054 /* Extension+ID.swift */,
+				17FCFB312AAF34A3006B1597 /* Extension+DeleteItemAlert.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -195,12 +206,13 @@
 			path = Network;
 			sourceTree = "<group>";
 		};
-		17A5C1EC2AAA1D2300355054 /* CustomUI */ = {
+		17A5C1EC2AAA1D2300355054 /* Custom */ = {
 			isa = PBXGroup;
 			children = (
 				17A5C1ED2AAA1D8B00355054 /* SortButton.swift */,
+				17DCA8AC2AAEF59F00AA847B /* CustomSearchController.swift */,
 			);
-			path = CustomUI;
+			path = Custom;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -287,13 +299,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				17FCFB2E2AAF20C0006B1597 /* ButtonImageName.swift in Sources */,
+				17DCA8AF2AAEF9CA00AA847B /* NavigationTitleValue.swift in Sources */,
 				17A5C1E32AA9B9A700355054 /* NaverShoppingModel.swift in Sources */,
+				17FCFB322AAF34A3006B1597 /* Extension+DeleteItemAlert.swift in Sources */,
 				17A5C1E02AA9AE9400355054 /* Extension+ID.swift in Sources */,
 				17A5C1E92AA9BBD400355054 /* APIManager.swift in Sources */,
 				17415C242AAD5DB6008E2DEB /* ShoppingItemTableRepository.swift in Sources */,
 				17415C1F2AAD53CC008E2DEB /* BaseView.swift in Sources */,
 				17415C152AAB7AC2008E2DEB /* LikeListViewController.swift in Sources */,
 				17A5C1EE2AAA1D8B00355054 /* SortButton.swift in Sources */,
+				17DCA8AD2AAEF59F00AA847B /* CustomSearchController.swift in Sources */,
 				17A5C1CF2AA9A66D00355054 /* BaseViewController.swift in Sources */,
 				17A5C1E72AA9BACF00355054 /* APIKeys.swift in Sources */,
 				17415C262AADCD3E008E2DEB /* LikeListView.swift in Sources */,
@@ -306,7 +322,7 @@
 				17415C1D2AAD526D008E2DEB /* ShoppingSearchView.swift in Sources */,
 				17A5C1DD2AA9AD0100355054 /* ShoppingListCollectionViewCell.swift in Sources */,
 				17DCA8A92AAED55800AA847B /* DetailWebView.swift in Sources */,
-				17A5C1F02AAA233300355054 /* SortEnum.swift in Sources */,
+				17A5C1F02AAA233300355054 /* SortQueryEnum.swift in Sources */,
 				17A5C1BA2AA9A4DC00355054 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

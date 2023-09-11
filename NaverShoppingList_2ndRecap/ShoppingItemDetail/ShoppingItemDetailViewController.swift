@@ -51,11 +51,14 @@ final class ShoppingItemDetailViewController: BaseViewController {
               let item = selectedItem else { return }
         
         if likeItemList.contains(where: { $0.productID == item.productID }) {
-            repository.deleteShoppingItem(savedItemList: likeItemList, searchedItemList: item)
-            navigationItem.rightBarButtonItem?.image = UIImage(systemName: "heart")
+            
+            deleteAlert {
+                self.repository.deleteShoppingItem(savedItemList: likeItemList, searchedItemList: item)
+                self.navigationItem.rightBarButtonItem?.image = UIImage(systemName: ButtonImageName.shared.heartNone)
+            }
         } else {
             repository.createShoppingItem(itemToSave: item)
-            navigationItem.rightBarButtonItem?.image = UIImage(systemName: "heart.fill")
+            navigationItem.rightBarButtonItem?.image = UIImage(systemName: ButtonImageName.shared.heartSelected)
         }
     }
     
@@ -65,9 +68,9 @@ final class ShoppingItemDetailViewController: BaseViewController {
               let item = selectedItem else { return }
         
         if shoppingItem.contains(where: { $0.productID == item.productID }) {
-            navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "heart.fill"), style: .plain, target: self, action: #selector(likeBarButtonTapped))
+            navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: ButtonImageName.shared.heartSelected), style: .plain, target: self, action: #selector(likeBarButtonTapped))
         } else {
-            navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "heart"), style: .plain, target: self, action: #selector(likeBarButtonTapped))
+            navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: ButtonImageName.shared.heartNone), style: .plain, target: self, action: #selector(likeBarButtonTapped))
         }
     }
 }

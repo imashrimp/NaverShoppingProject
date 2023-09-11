@@ -33,12 +33,6 @@ class ShoppingItemTableRepository {
             let itemToDelete = savedItemList.where { $0.productID == savedItem.productID }
             realm.delete(itemToDelete)
         }
-        
-//        var test = ShoppingItem(productID: "", mallName: "", title: "", lprice: "", image: "", date: Date())
-//        
-//        var idk = Item(title: "", image: "", lprice: "", mallName: "", productID: "")
-//        
-//        var wtf = ShoppingItem(productID: idk., mallName: <#T##String#>, title: <#T##String#>, lprice: <#T##String#>, image: <#T##String#>, date: <#T##Date#>)
     }
     
     func createShoppingItem(itemToSave: Item) {
