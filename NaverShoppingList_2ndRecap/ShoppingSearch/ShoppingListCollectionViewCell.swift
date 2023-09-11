@@ -56,36 +56,52 @@ class ShoppingListCollectionViewCell: UICollectionViewCell {
         return view
     }()
         
-    @objc
-    func likeButtonTapped() {
-        completionHandler?()
+    @objc func likeButtonTapped() {
+         completionHandler?()
     }
     
-    func showCellContents(searchedShoppingItem: Item, repoShoppingItem: Results<ShoppingItem>, imageURL: URL) {
-        
+    func showSearchedShoppingCellContents(repoShoppingList: Results<ShoppingItem>, searchedShoppingItem: Item, imageURL: URL) {
+
         //MARK: - 버튼 이미지 삼항연산자로 빼보자
-        if repoShoppingItem.contains(where: { $0.productID == searchedShoppingItem.productID }) {
+        if repoShoppingList.contains(where: { $0.productID == searchedShoppingItem.productID }) {
             likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
         } else {
             likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
         }
-        
+
+        let trimedTitle = searchedShoppingItem.title.components(separatedBy: ["<", "b", ">", "/"]).joined()
+
+
         mallNameLabel.text = searchedShoppingItem.mallName
-        titleLabel.text = searchedShoppingItem.title
+        titleLabel.text = trimedTitle
         lpriceLabel.text = searchedShoppingItem.lprice
         productImage.kf.setImage(with: imageURL)
-        
+
         completionHandler = { [weak self] in
-            if repoShoppingItem.contains(where: { $0.productID == searchedShoppingItem.productID }) {
-                
-                self?.repository.deleteShoppingItem(savedItemList: repoShoppingItem, searchedItemList: searchedShoppingItem)
-                
+            //MARK: - 여기서 searchedShoppingItem의 productID값
+            if repoShoppingList.contains(where: { $0.productID == searchedShoppingItem.productID }) {
+
+                self?.repository.deleteShoppingItem(savedItemList: repoShoppingList, searchedItemList: searchedShoppingItem)
+
                 self?.likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
             } else {
                 self?.repository.createShoppingItem(itemToSave: searchedShoppingItem)
-                
+
                 self?.likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
             }
+        }
+    }
+    
+    func showLikeListCellContents(imageURL: URL, savedItem: Results<ShoppingItem>, index: Int) {
+        productImage.kf.setImage(with: imageURL)
+        likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+        likeButton.setImage(UIImage(systemName: "heart"), for: .highlighted)
+        mallNameLabel.text = savedItem[index].mallName
+        titleLabel.text = savedItem[index].title
+        lpriceLabel.text = savedItem[index].lprice
+        
+        completionHandler = { [weak self] in
+            self?.repository.deleteLikeItem(savedItemList: savedItem, savedItem: savedItem[index])
         }
     }
     

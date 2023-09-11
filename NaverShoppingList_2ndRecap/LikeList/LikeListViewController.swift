@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import SnapKit
 import RealmSwift
 import Kingfisher
 
@@ -14,13 +13,17 @@ import Kingfisher
 class LikeListViewController: BaseViewController {
     
     let realm = try! Realm()
-
+    let repository = ShoppingItemTableRepository()
+    
+    //MARK: - 여기가 shoppingListVC랑 뭐가 다른지 보자
     var likeItemList: Results<ShoppingItem>? {
         didSet {
-            print("렘 데이터 바뀜")
-            collectionView.reloadData()
+            print("**DID SET")
+            mainVC.collectionView.reloadData()
         }
     }
+    
+    private let mainVC = LikeListView()
     
     lazy var searchController = {
         let view = UISearchController(searchResultsController: nil)
@@ -29,40 +32,30 @@ class LikeListViewController: BaseViewController {
         return view
     }()
     
-    lazy var collectionView = {
-        let view = UICollectionView(frame: .zero,
-                                    collectionViewLayout: collectionViewFlowLayout())
-        view.register(ShoppingListCollectionViewCell.self,
-                      forCellWithReuseIdentifier: ShoppingListCollectionViewCell.id)
-        view.delegate = self
-        view.dataSource = self
-        return view
-    }()
+    override func loadView() {
+        self.view = mainVC
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        likeItemList = realm.objects(ShoppingItem.self).sorted(byKeyPath: "date", ascending: false)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        collectionView.reloadData()
+        mainVC.collectionView.reloadData()
     }
     
     override func configure() {
         super.configure()
         
-        view.addSubview(collectionView)
+        mainVC.collectionView.delegate = self
+        mainVC.collectionView.dataSource = self
+        
+        likeItemList = repository.sortLikeItemListByDate()
         
         navigationItem.searchController = searchController
         navigationItem.title = "좋아요 목록"
-    }
-    
-    override func setConstratints() {
-        collectionView.snp.makeConstraints { make in
-            make.horizontalEdges.equalToSuperview()
-            make.verticalEdges.equalTo(view.safeAreaLayoutGuide)
-        }
+        
     }
 }
 
@@ -74,8 +67,9 @@ extension LikeListViewController: UICollectionViewDelegate {
         
         let item = list[indexPath.row]
         
-        //MARK: - 여기서 date에 Date()전달해도 문제없나...?
-        vc.realmItem = ShoppingItem(productID: item.productID, mallName: item.mallName, title: item.title, lprice: item.lprice, image: item.image, date: Date())
+        vc.selectedItem = Item(title: item.title, image: item.image, lprice: item.lprice, mallName: item.mallName, productID: item.productID)
+        
+//        vc.realmItem = ShoppingItem(productID: item.productID, mallName: item.mallName, title: item.title, lprice: item.lprice, image: item.image, date: Date())
         navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -98,33 +92,14 @@ extension LikeListViewController: UICollectionViewDataSource {
         
         let item = itemList[indexPath.row]
         
-        //MARK: - 여기도 캐싱이랑 prefetch를 취소할 수 있는 방법을 찾으면 아래처럼 구현해보자
-//        DispatchQueue.global().async {
-//            do {
-//                let data = try Data(contentsOf: url)
-//                DispatchQueue.main.async {
-//                    cell.productImage.image = UIImage(data: data)
-//                }
-//
-//            } catch {
-//                cell.productImage.image = UIImage(systemName: "star")
-//            }
-//        }
+        cell.showLikeListCellContents(imageURL: url, savedItem: itemList, index: indexPath.row)
         
-        cell.productImage.kf.setImage(with: url)
-        cell.likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
-        cell.likeButton.setImage(UIImage(systemName: "heart"), for: .highlighted)
-        cell.mallNameLabel.text = item.mallName
-        cell.titleLabel.text = item.title
-        cell.lpriceLabel.text = item.lprice
-        
-        //MARK: - 여기서는 데이터가 지워져도 데이터의 값이 변하는걸 didSet에서 못 잡아냄 왜...?
-        //여기서는 reloadData해줘야함. 주기가 끝나면 뷰컨과의 참조가 끊겨서 didSet을 통한 데이터 리로드를 할 수 없음.
         cell.completionHandler = { [weak self] in
             try! self?.realm.write {
                 let itemToRemove = itemList.where { $0.productID == item.productID }
                 self?.realm.delete(itemToRemove)
             }
+            //MARK: - 컬렉션뷰 리로드를 여기서 안 하려면 Realm의 notification token으로 처리를 해줘야함.
             collectionView.reloadData()
         }
         return cell
@@ -136,36 +111,13 @@ extension LikeListViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         
         if searchText.isEmpty {
-            likeItemList = realm.objects(ShoppingItem.self)
+            likeItemList = repository.sortLikeItemListByDate()
         } else {
-            likeItemList = realm.objects(ShoppingItem.self).where{
-                $0.title.contains(searchText)
-            }
+            likeItemList = repository.filterLikeItems(keyword: searchText)
         }
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        likeItemList = realm.objects(ShoppingItem.self)
-    }
-    
-}
-
-
-extension LikeListViewController {
-    
-    func collectionViewFlowLayout() -> UICollectionViewFlowLayout {
-        let layout = UICollectionViewFlowLayout()
-        let space: CGFloat = 8
-        let width = (UIScreen.main.bounds.width - (space * 3)) / 2
-        let height = UIScreen.main.bounds.height / 3
-        layout.minimumLineSpacing = 8
-        layout.minimumInteritemSpacing = 8
-        layout.sectionInset = UIEdgeInsets(top: 8,
-                                           left: 8,
-                                           bottom: 8,
-                                           right: 8)
-        layout.itemSize = CGSize(width: width, height: height)
-        
-        return layout
+        likeItemList = repository.sortLikeItemListByDate()
     }
 }

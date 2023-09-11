@@ -15,6 +15,7 @@
 		17415C1F2AAD53CC008E2DEB /* BaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17415C1E2AAD53CC008E2DEB /* BaseView.swift */; };
 		17415C222AAD5435008E2DEB /* CollectionViewFlowLayoutProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17415C212AAD5435008E2DEB /* CollectionViewFlowLayoutProtocol.swift */; };
 		17415C242AAD5DB6008E2DEB /* ShoppingItemTableRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17415C232AAD5DB6008E2DEB /* ShoppingItemTableRepository.swift */; };
+		17415C262AADCD3E008E2DEB /* LikeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17415C252AADCD3E008E2DEB /* LikeListView.swift */; };
 		17A5C1B82AA9A4DC00355054 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A5C1B72AA9A4DC00355054 /* AppDelegate.swift */; };
 		17A5C1BA2AA9A4DC00355054 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A5C1B92AA9A4DC00355054 /* SceneDelegate.swift */; };
 		17A5C1BC2AA9A4DC00355054 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A5C1BB2AA9A4DC00355054 /* ViewController.swift */; };
@@ -34,6 +35,7 @@
 		17A5C1E92AA9BBD400355054 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A5C1E82AA9BBD400355054 /* APIManager.swift */; };
 		17A5C1EE2AAA1D8B00355054 /* SortButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A5C1ED2AAA1D8B00355054 /* SortButton.swift */; };
 		17A5C1F02AAA233300355054 /* SortEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A5C1EF2AAA233300355054 /* SortEnum.swift */; };
+		17DCA8A92AAED55800AA847B /* DetailWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17DCA8A82AAED55800AA847B /* DetailWebView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +46,7 @@
 		17415C1E2AAD53CC008E2DEB /* BaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseView.swift; sourceTree = "<group>"; };
 		17415C212AAD5435008E2DEB /* CollectionViewFlowLayoutProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewFlowLayoutProtocol.swift; sourceTree = "<group>"; };
 		17415C232AAD5DB6008E2DEB /* ShoppingItemTableRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingItemTableRepository.swift; sourceTree = "<group>"; };
+		17415C252AADCD3E008E2DEB /* LikeListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeListView.swift; sourceTree = "<group>"; };
 		17A5C1B42AA9A4DC00355054 /* NaverShoppingList_2ndRecap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NaverShoppingList_2ndRecap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		17A5C1B72AA9A4DC00355054 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		17A5C1B92AA9A4DC00355054 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -61,6 +64,7 @@
 		17A5C1E82AA9BBD400355054 /* APIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
 		17A5C1ED2AAA1D8B00355054 /* SortButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortButton.swift; sourceTree = "<group>"; };
 		17A5C1EF2AAA233300355054 /* SortEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortEnum.swift; sourceTree = "<group>"; };
+		17DCA8A82AAED55800AA847B /* DetailWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailWebView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +87,7 @@
 			isa = PBXGroup;
 			children = (
 				17415C0A2AAB0C9D008E2DEB /* ShoppingItemDetailViewController.swift */,
+				17DCA8A82AAED55800AA847B /* DetailWebView.swift */,
 			);
 			path = ShoppingItemDetail;
 			sourceTree = "<group>";
@@ -100,6 +105,7 @@
 			isa = PBXGroup;
 			children = (
 				17415C142AAB7AC2008E2DEB /* LikeListViewController.swift */,
+				17415C252AADCD3E008E2DEB /* LikeListView.swift */,
 			);
 			path = LikeList;
 			sourceTree = "<group>";
@@ -290,6 +296,7 @@
 				17A5C1EE2AAA1D8B00355054 /* SortButton.swift in Sources */,
 				17A5C1CF2AA9A66D00355054 /* BaseViewController.swift in Sources */,
 				17A5C1E72AA9BACF00355054 /* APIKeys.swift in Sources */,
+				17415C262AADCD3E008E2DEB /* LikeListView.swift in Sources */,
 				17415C0E2AAB1916008E2DEB /* ShoppingItemRealmModel.swift in Sources */,
 				17415C0B2AAB0C9D008E2DEB /* ShoppingItemDetailViewController.swift in Sources */,
 				17A5C1BC2AA9A4DC00355054 /* ViewController.swift in Sources */,
@@ -298,6 +305,7 @@
 				17A5C1CC2AA9A5E500355054 /* ShoppingSearchViewController.swift in Sources */,
 				17415C1D2AAD526D008E2DEB /* ShoppingSearchView.swift in Sources */,
 				17A5C1DD2AA9AD0100355054 /* ShoppingListCollectionViewCell.swift in Sources */,
+				17DCA8A92AAED55800AA847B /* DetailWebView.swift in Sources */,
 				17A5C1F02AAA233300355054 /* SortEnum.swift in Sources */,
 				17A5C1BA2AA9A4DC00355054 /* SceneDelegate.swift in Sources */,
 			);

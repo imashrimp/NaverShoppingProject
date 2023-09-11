@@ -156,7 +156,7 @@ extension ShoppingSearchViewController: UISearchBarDelegate {
             
             self.totalDataCount = result.total
             self.shoppingList.append(contentsOf: result.items)
-            
+
             self.mainView.collectionView.reloadData()
         }
     }
@@ -171,12 +171,14 @@ extension ShoppingSearchViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let vc = ShoppingItemDetailViewController()
-        //MARK: - 이거 값 전달 할 때 title값 다듬어보기
-        let item = shoppingList[indexPath.row]
-        //MARK: - 여기서 date에 Date()전달해도 문제없나...?
-        vc.realmItem = ShoppingItem(productID: item.productID, mallName: item.mallName, title: item.title, lprice: item.lprice, image: item.image, date: Date())
         
-        print(item.mallName)
+        let item = shoppingList[indexPath.row]
+        
+        let trimedTitle = item.title.components(separatedBy: ["<", "b", ">", "/"]).joined()
+        
+        vc.selectedItem = Item(title: trimedTitle, image: item.image, lprice: item.lprice, mallName: item.mallName, productID: item.productID)
+//        vc.realmItem = ShoppingItem(productID: item.productID, mallName: item.mallName, title: trimedTitle, lprice: item.lprice, image: item.image, date: Date())
+        
         navigationController?.pushViewController(vc, animated: true)
     }
 }
@@ -184,10 +186,10 @@ extension ShoppingSearchViewController: UICollectionViewDelegate {
 extension ShoppingSearchViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        
         return shoppingList.count
     }
     
-    //MARK: - 셀 컨텐츠 나타내는 메서드는 셀이 갖고있을 수 있게하기
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         guard
@@ -199,10 +201,11 @@ extension ShoppingSearchViewController: UICollectionViewDataSource {
         
         let item = shoppingList[indexPath.row]
         
+        let shoppingItem = ShoppingItem(productID: item.productID, mallName: item.mallName, title: item.title, lprice: item.lprice, image: item.image, date: Date())
+        
         let savedItemList = repository.readSavedShopplinList()
         
-        //MARK: - 이건 좀 아쉬운 듯 셀이 그려질 때마다 realm에서 데이터 가져오니까 cellForRowAt 빼면 좋을 듯?
-        cell.showCellContents(searchedShoppingItem: item, repoShoppingItem: savedItemList, imageURL: url)
+        cell.showSearchedShoppingCellContents(repoShoppingList: savedItemList,searchedShoppingItem: item, imageURL: url)
 
         return cell
     }
