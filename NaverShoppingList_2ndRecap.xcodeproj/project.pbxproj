@@ -18,7 +18,6 @@
 		17415C262AADCD3E008E2DEB /* LikeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17415C252AADCD3E008E2DEB /* LikeListView.swift */; };
 		17A5C1B82AA9A4DC00355054 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A5C1B72AA9A4DC00355054 /* AppDelegate.swift */; };
 		17A5C1BA2AA9A4DC00355054 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A5C1B92AA9A4DC00355054 /* SceneDelegate.swift */; };
-		17A5C1BC2AA9A4DC00355054 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A5C1BB2AA9A4DC00355054 /* ViewController.swift */; };
 		17A5C1C12AA9A4DD00355054 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 17A5C1C02AA9A4DD00355054 /* Assets.xcassets */; };
 		17A5C1C42AA9A4DD00355054 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 17A5C1C22AA9A4DD00355054 /* LaunchScreen.storyboard */; };
 		17A5C1CC2AA9A5E500355054 /* ShoppingSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A5C1CB2AA9A5E500355054 /* ShoppingSearchViewController.swift */; };
@@ -54,7 +53,6 @@
 		17A5C1B42AA9A4DC00355054 /* NaverShoppingList_2ndRecap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NaverShoppingList_2ndRecap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		17A5C1B72AA9A4DC00355054 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		17A5C1B92AA9A4DC00355054 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		17A5C1BB2AA9A4DC00355054 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		17A5C1C02AA9A4DD00355054 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		17A5C1C32AA9A4DD00355054 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		17A5C1C52AA9A4DD00355054 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -156,13 +154,13 @@
 				17A5C1D02AA9A72600355054 /* ShoppingSearch */,
 				17A5C1B72AA9A4DC00355054 /* AppDelegate.swift */,
 				17A5C1B92AA9A4DC00355054 /* SceneDelegate.swift */,
-				17A5C1BB2AA9A4DC00355054 /* ViewController.swift */,
 				17A5C1C02AA9A4DD00355054 /* Assets.xcassets */,
 				17A5C1C22AA9A4DD00355054 /* LaunchScreen.storyboard */,
 				17A5C1C52AA9A4DD00355054 /* Info.plist */,
 				17A5C1E42AA9BAAF00355054 /* .gitignore */,
 				17DCA8AE2AAEF9CA00AA847B /* NavigationTitleValue.swift */,
 				17FCFB2D2AAF20C0006B1597 /* ButtonImageName.swift */,
+				17FCFB332AAF3B3C006B1597 /* LiteralAsset */,
 			);
 			path = NaverShoppingList_2ndRecap;
 			sourceTree = "<group>";
@@ -213,6 +211,13 @@
 				17DCA8AC2AAEF59F00AA847B /* CustomSearchController.swift */,
 			);
 			path = Custom;
+			sourceTree = "<group>";
+		};
+		17FCFB332AAF3B3C006B1597 /* LiteralAsset */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = LiteralAsset;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -315,7 +320,6 @@
 				17415C262AADCD3E008E2DEB /* LikeListView.swift in Sources */,
 				17415C0E2AAB1916008E2DEB /* ShoppingItemRealmModel.swift in Sources */,
 				17415C0B2AAB0C9D008E2DEB /* ShoppingItemDetailViewController.swift in Sources */,
-				17A5C1BC2AA9A4DC00355054 /* ViewController.swift in Sources */,
 				17A5C1B82AA9A4DC00355054 /* AppDelegate.swift in Sources */,
 				17415C222AAD5435008E2DEB /* CollectionViewFlowLayoutProtocol.swift in Sources */,
 				17A5C1CC2AA9A5E500355054 /* ShoppingSearchViewController.swift in Sources */,
@@ -465,6 +469,7 @@
 				DEVELOPMENT_TEAM = H5BHKL6637;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = NaverShoppingList_2ndRecap/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "권현석";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -496,6 +501,7 @@
 				DEVELOPMENT_TEAM = H5BHKL6637;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = NaverShoppingList_2ndRecap/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "권현석";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;

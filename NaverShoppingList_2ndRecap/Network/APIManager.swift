@@ -25,8 +25,6 @@ class APIManager {
             APIHeader.secret: APIkey.clienSecret
         ]
         
-        print("**URL:", url)
-        
         //MARK: - 상태코드 처리
         AF.request(url, method: .get, headers: header).validate()
             .responseDecodable(of: NaverShopping.self) { response in

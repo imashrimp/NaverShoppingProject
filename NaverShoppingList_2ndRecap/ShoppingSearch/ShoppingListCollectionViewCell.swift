@@ -15,7 +15,7 @@ class ShoppingListCollectionViewCell: UICollectionViewCell {
     
     let numberFormatter: NumberFormatter = NumberFormatter()
     
-    var completionHandler: (() -> ())?
+    var completionHandler: (() -> Void)?
     let repository = ShoppingItemTableRepository()
     
     let productImage = {
@@ -59,6 +59,8 @@ class ShoppingListCollectionViewCell: UICollectionViewCell {
     }()
         
     @objc func likeButtonTapped() {
+        //간짜장 1. 여기서 notificationCenter를 통한 값 전달 할거임.
+        //notificationCenter를 메서드 내부에 넣고, 매개변수로 indexPath와
          completionHandler?()
     }
     
@@ -82,7 +84,8 @@ class ShoppingListCollectionViewCell: UICollectionViewCell {
         guard let lPriceInt = Int(searchedShoppingItem.lprice), let result: String = numberFormatter.string(for: lPriceInt) else { return }
                 
         lpriceLabel.text = result + "원"
-        productImage.kf.setImage(with: imageURL)
+        productImage.kf.indicatorType = .activity
+        productImage.kf.setImage(with: imageURL, options: [ .processor(DownsamplingImageProcessor(size: productImage.frame.size))])
 
         completionHandler = { [weak self] in
             

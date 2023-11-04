@@ -38,6 +38,7 @@ final class ShoppingSearchViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         repository.printRealmDocumentURL()
+        //간짜장 2. notification observer 추가하고, 그 내부에서 특정 셀만 리로드 할 수 있도록
     }
     
     override func viewWillAppear(_ animated: Bool) {
